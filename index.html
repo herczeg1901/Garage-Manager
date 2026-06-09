@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Garage Business Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #0c0c0c;
+  --surface: #141414;
+  --card: #1a1a1a;
+  --border: rgba(255,255,255,0.07);
+  --red: #d42b2b;
+  --red2: #ff3b3b;
+  --white: #f0f0f0;
+  --chrome: #aaa;
+  --dim: #555;
+  --green: #2aaa55;
+  --amber: #e8a800;
+  --blue: #2a7aaa;
+  --sidebar: 220px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;-webkit-overflow-scrolling:touch;}
+body{background:var(--bg);color:var(--white);font-family:'Barlow',sans-serif;display:flex;}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:var(--sidebar);flex-shrink:0;
+  background:var(--surface);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  height:100vh;overflow-y:auto;
+}
+.sidebar-brand{
+  padding:1.4rem 1.2rem 1rem;
+  border-bottom:1px solid var(--border);
+}
+.sidebar-brand .biz{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.1rem;letter-spacing:0.15em;
+  color:var(--white);line-height:1.1;
+}
+.sidebar-brand .biz span{color:var(--red);}
+.sidebar-brand .sub{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--dim);margin-top:0.2rem;
+}
+.nav-section{
+  padding:0.75rem 0.75rem 0.25rem;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--dim);
+}
+.nav-item{
+  display:flex;align-items:center;gap:0.7rem;
+  padding:0.65rem 1.2rem;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.9rem;letter-spacing:0.05em;
+  color:var(--chrome);cursor:pointer;
+  border-left:3px solid transparent;
+  transition:all 0.15s;user-select:none;
+}
+.nav-item:hover{color:var(--white);background:rgba(255,255,255,0.03);}
+.nav-item.active{color:var(--white);border-left-color:var(--red);background:rgba(212,43,43,0.08);}
+.nav-item .icon{font-size:1rem;width:1.2rem;text-align:center;}
+.nav-badge{
+  margin-left:auto;background:var(--red);color:#fff;
+  font-size:0.65rem;padding:0.1rem 0.4rem;
+  font-family:'Barlow Condensed',sans-serif;letter-spacing:0.05em;
+  min-width:1.2rem;text-align:center;
+}
+.sidebar-footer{
+  margin-top:auto;padding:1rem 1.2rem;
+  border-top:1px solid var(--border);
+  font-size:0.75rem;color:var(--dim);
+  font-family:'Barlow Condensed',sans-serif;letter-spacing:0.08em;
+}
+
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden;-webkit-overflow-scrolling:touch;}
+.topbar{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:0.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.topbar-title{
+  font-family:'Bebas Neue',sans-serif;font-size:1.5rem;
+  letter-spacing:0.1em;color:var(--white);
+}
+.topbar-actions{display:flex;gap:0.75rem;align-items:center;}
+.btn{
+  font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;
+  letter-spacing:0.15em;text-transform:uppercase;
+  border:none;padding:0.55rem 1.2rem;cursor:pointer;transition:all 0.15s;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+}
+.btn-red{background:var(--red);color:#fff;}
+.btn-red:hover{background:var(--red2);}
+.btn-ghost{background:transparent;color:var(--chrome);border:1px solid var(--border);}
+.btn-ghost:hover{border-color:var(--chrome);color:var(--white);}
+.btn-green{background:#1a5c30;color:var(--green);border:1px solid var(--green);}
+.btn-green:hover{background:#2a8a4a;color:#fff;}
+.btn-sm{padding:0.35rem 0.8rem;font-size:0.72rem;}
+
+.content{flex:1;overflow-y:auto;padding:1.5rem;}
+
+/* ── PAGES ── */
+.page{display:none;}
+.page.active{display:block;}
+
+/* ── STAT CARDS ── */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
+.stat-card{
+  background:var(--card);border:1px solid var(--border);
+  padding:1.2rem 1.4rem;position:relative;overflow:hidden;
+}
+.stat-card::before{
+  content:'';position:absolute;top:0;left:0;width:3px;height:100%;
+}
+.stat-card.red::before{background:var(--red);}
+.stat-card.green::before{background:var(--green);}
+.stat-card.amber::before{background:var(--amber);}
+.stat-card.blue::before{background:var(--blue);}
+.stat-label{
+  font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;
+  letter-spacing:0.2em;text-transform:uppercase;color:var(--dim);margin-bottom:0.5rem;
+}
+.stat-value{
+  font-family:'Bebas Neue',sans-serif;font-size:2rem;
+  letter-spacing:0.05em;line-height:1;
+}
+.stat-card.red .stat-value{color:var(--red);}
+.stat-card.green .stat-value{color:var(--green);}
+.stat-card.amber .stat-value{color:var(--amber);}
+.stat-card.blue .stat-value{color:var(--blue);}
+.stat-sub{font-size:0.75rem;color:var(--dim);margin-top:0.3rem;}
+
+/* ── TABLES ── */
+.section-card{
+  background:var(--card);border:1px solid var(--border);
+  margin-bottom:1.2rem;overflow:hidden;
+}
+.section-head{
+  padding:0.9rem 1.2rem;background:var(--surface);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.section-head-title{
+  font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;
+  letter-spacing:0.18em;text-transform:uppercase;color:var(--white);
+  display:flex;align-items:center;gap:0.6rem;
+}
+table{width:100%;border-collapse:collapse;}
+th{
+  font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;
+  letter-spacing:0.2em;text-transform:uppercase;color:var(--dim);
+  text-align:left;padding:0.6rem 1rem;
+  border-bottom:1px solid var(--border);white-space:nowrap;
+}
+td{
+  padding:0.65rem 1rem;border-bottom:1px solid rgba(255,255,255,0.03);
+  font-size:0.88rem;color:var(--chrome);vertical-align:middle;
+}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,0.02);color:var(--white);}
+.td-strong{color:var(--white);font-weight:500;}
+.td-mono{font-family:'Barlow Condensed',sans-serif;letter-spacing:0.05em;}
+
+/* ── STATUS BADGES ── */
+.badge{
+  font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;
+  letter-spacing:0.1em;text-transform:uppercase;
+  padding:0.2rem 0.6rem;display:inline-block;
+}
+.badge-green{background:rgba(42,170,85,0.15);color:var(--green);border:1px solid rgba(42,170,85,0.3);}
+.badge-amber{background:rgba(232,168,0,0.15);color:var(--amber);border:1px solid rgba(232,168,0,0.3);}
+.badge-red{background:rgba(212,43,43,0.15);color:#ff6b6b;border:1px solid rgba(212,43,43,0.3);}
+.badge-blue{background:rgba(42,122,170,0.15);color:#5ab0e8;border:1px solid rgba(42,122,170,0.3);}
+.badge-grey{background:rgba(255,255,255,0.05);color:var(--dim);border:1px solid var(--border);}
+
+/* ── MODAL ── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.85);z-index:9999;
+  align-items:flex-end;justify-content:center;
+  -webkit-overflow-scrolling:touch;
+}
+.modal-overlay.open{display:flex;}
+.modal{
+  background:var(--surface);border:1px solid var(--border);
+  border-bottom:none;
+  width:100%;max-width:640px;max-height:92vh;overflow-y:auto;
+  animation:modalIn 0.25s ease;
+  border-radius:16px 16px 0 0;
+  -webkit-overflow-scrolling:touch;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+@keyframes modalIn{from{opacity:0;transform:translateY(100%);}to{opacity:1;transform:translateY(0);}}
+.modal-head{
+  padding:1rem 1.4rem;background:var(--card);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.modal-title{
+  font-family:'Barlow Condensed',sans-serif;font-size:1rem;
+  letter-spacing:0.15em;text-transform:uppercase;
+}
+.modal-close{
+  background:none;border:none;color:var(--dim);cursor:pointer;
+  font-size:1.2rem;transition:color 0.15s;
+}
+.modal-close:hover{color:var(--red);}
+.modal-body{padding:1.4rem;}
+.modal-footer{
+  padding:1rem 1.4rem;border-top:1px solid var(--border);
+  display:flex;justify-content:flex-end;gap:0.75rem;
+}
+
+/* ── FORM FIELDS ── */
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.9rem;margin-bottom:0.9rem;}
+.field-grid-3{grid-template-columns:1fr 1fr 1fr;}
+.field-full{grid-column:1/-1;}
+.field{display:flex;flex-direction:column;gap:0.35rem;}
+.field label{
+  font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;
+  letter-spacing:0.18em;text-transform:uppercase;color:var(--dim);
+}
+.field input,.field select,.field textarea{
+  background:var(--card);border:1px solid var(--border);
+  color:var(--white);font-family:'Barlow',sans-serif;font-size:0.88rem;
+  padding:0.6rem 0.8rem;outline:none;transition:border-color 0.15s;appearance:none;width:100%;
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--red);}
+.field textarea{min-height:70px;resize:vertical;}
+.field select option{background:var(--card);}
+
+/* ── ACTION ICONS ── */
+.act-btn{
+  background:none;border:none;cursor:pointer;
+  font-size:0.85rem;padding:0.2rem 0.4rem;
+  color:var(--dim);transition:color 0.15s;
+}
+.act-btn:hover{color:var(--white);}
+.act-btn.del:hover{color:var(--red);}
+
+/* ── PROFIT OVERVIEW ── */
+.profit-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem;}
+.profit-bar-wrap{margin:1rem 0;}
+.profit-bar-label{
+  display:flex;justify-content:space-between;
+  font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;
+  letter-spacing:0.1em;color:var(--chrome);margin-bottom:0.3rem;
+}
+.profit-bar-bg{background:var(--surface);height:6px;width:100%;}
+.profit-bar-fill{height:6px;background:var(--red);transition:width 0.5s ease;}
+.profit-bar-fill.green{background:var(--green);}
+
+/* ── EMPTY STATE ── */
+.empty{
+  text-align:center;padding:3rem 1rem;color:var(--dim);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;
+}
+.empty .e-icon{font-size:2rem;margin-bottom:0.75rem;display:block;}
+
+/* ── SEARCH ── */
+.search-wrap{position:relative;}
+.search-wrap input{
+  background:var(--card);border:1px solid var(--border);
+  color:var(--white);font-family:'Barlow',sans-serif;font-size:0.82rem;
+  padding:0.5rem 0.8rem 0.5rem 2rem;outline:none;width:180px;
+  transition:border-color 0.15s;
+}
+.search-wrap input:focus{border-color:var(--red);width:220px;}
+.search-wrap::before{
+  content:'🔍';position:absolute;left:0.5rem;top:50%;transform:translateY(-50%);
+  font-size:0.7rem;pointer-events:none;
+}
+
+/* ── SAVE INDICATOR ── */
+.save-indicator{
+  position:fixed;top:70px;right:1rem;
+  background:var(--green);color:#fff;
+  font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;
+  letter-spacing:0.1em;text-transform:uppercase;
+  padding:0.4rem 0.9rem;
+  opacity:0;transition:opacity 0.3s;
+  pointer-events:none;z-index:999;
+}
+.save-indicator.show{opacity:1;}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{display:none;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  body{flex-direction:column;}
+  .sidebar{display:none;}
+  .main{height:100vh;padding-bottom:70px;}
+  .content{padding:1rem;}
+  .stat-grid{grid-template-columns:1fr 1fr;gap:0.75rem;}
+  .profit-grid{grid-template-columns:1fr;}
+  .topbar{padding:0.75rem 1rem;}
+  .topbar-title{font-size:1.2rem;}
+  .search-wrap{display:none;}
+  #addBtn{padding:0.7rem 1.4rem;font-size:0.9rem;min-height:44px;}
+  table{font-size:0.78rem;}
+  th,td{padding:0.5rem 0.6rem;}
+
+  .bottom-nav{
+    display:flex;
+    position:fixed;bottom:0;left:0;right:0;
+    background:var(--surface);
+    border-top:2px solid var(--border);
+    z-index:500;height:70px;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  .bottom-nav-item{
+    flex:1;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    gap:0.15rem;cursor:pointer;
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:0.58rem;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--dim);transition:all 0.15s;
+    position:relative;padding:0.5rem 0;
+    border-top:2px solid transparent;
+    -webkit-tap-highlight-color:transparent;
+    touch-action:manipulation;
+  }
+  .bottom-nav-item.active{color:var(--red);border-top-color:var(--red);background:rgba(212,43,43,0.05);}
+  .bottom-nav-item .bn-icon{font-size:1.4rem;line-height:1;}
+  .bn-badge{
+    position:absolute;top:4px;right:calc(50% - 18px);
+    background:var(--red);color:#fff;
+    font-size:0.55rem;padding:0.1rem 0.3rem;
+    font-family:'Barlow Condensed',sans-serif;
+    min-width:1rem;text-align:center;line-height:1.4;border-radius:2px;
+  }
+}
+
+/* ── LOGIN SCREEN ── */
+.login-screen{
+  position:fixed;inset:0;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  z-index:99999;flex-direction:column;
+  padding:2rem;
+}
+.login-screen.hidden{display:none;}
+.login-box{
+  background:var(--surface);border:1px solid var(--border);
+  width:100%;max-width:380px;overflow:hidden;
+}
+.login-header{
+  background:var(--card);padding:2rem;text-align:center;
+  border-bottom:1px solid var(--border);
+}
+.login-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2rem;letter-spacing:0.2em;color:var(--white);
+}
+.login-logo span{color:var(--red);}
+.login-sub{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.75rem;letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--dim);margin-top:0.3rem;
+}
+.login-body{padding:2rem;}
+.login-field{display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1.2rem;}
+.login-field label{
+  font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;
+  letter-spacing:0.2em;text-transform:uppercase;color:var(--dim);
+}
+.login-field input{
+  background:var(--card);border:1px solid var(--border);
+  color:var(--white);font-family:'Barlow',sans-serif;font-size:1rem;
+  padding:0.8rem 1rem;outline:none;transition:border-color 0.15s;
+  -webkit-appearance:none;width:100%;
+}
+.login-field input:focus{border-color:var(--red);}
+.login-btn{
+  width:100%;background:var(--red);color:#fff;border:none;
+  font-family:'Barlow Condensed',sans-serif;font-size:1rem;
+  letter-spacing:0.2em;text-transform:uppercase;
+  padding:1rem;cursor:pointer;transition:background 0.15s;
+  touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+  min-height:48px;
+}
+.login-btn:hover{background:var(--red2);}
+.login-error{
+  color:#ff6b6b;font-size:0.82rem;text-align:center;
+  margin-top:0.75rem;font-family:'Barlow Condensed',sans-serif;
+  letter-spacing:0.1em;display:none;
+}
+.login-error.show{display:block;}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-header">
+      <div class="login-logo">GARAGE <span>MANAGER</span></div>
+      <div class="login-sub">Staff Access Only</div>
+    </div>
+    <div class="login-body">
+      <div class="login-field">
+        <label>Username</label>
+        <input type="text" id="loginUser" placeholder="Enter username" autocomplete="username">
+      </div>
+      <div class="login-field">
+        <label>Password</label>
+        <input type="password" id="loginPass" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <button class="login-btn" ontouchstart="doLogin()" onclick="doLogin()">Login</button>
+      <div class="login-error" id="loginError">Incorrect username or password</div>
+    </div>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="biz">GARAGE<br><span>MANAGER</span></div>
+    <div class="sub">Business Dashboard</div>
+  </div>
+
+  <div class="nav-section">Overview</div>
+  <div class="nav-item active" onclick="showPage('dashboard',this)">
+    <span class="icon">📊</span><span>Dashboard</span>
+  </div>
+
+  <div class="nav-section">Operations</div>
+  <div class="nav-item" onclick="showPage('bookings',this)">
+    <span class="icon">📅</span><span>Bookings</span>
+    <span class="nav-badge" id="bookingBadge">0</span>
+  </div>
+  <div class="nav-item" onclick="showPage('invoices',this)">
+    <span class="icon">🧾</span><span>Invoices</span>
+    <span class="nav-badge" id="invoiceBadge" style="background:var(--amber);color:#000;">0</span>
+  </div>
+
+  <div class="nav-section">Finance</div>
+  <div class="nav-item" onclick="showPage('supplies',this)">
+    <span class="icon">🛒</span><span>Supplies</span>
+  </div>
+  <div class="nav-item" onclick="showPage('overheads',this)">
+    <span class="icon">🏢</span><span>Overheads</span>
+  </div>
+  <div class="nav-item" onclick="showPage('profit',this)">
+    <span class="icon">💰</span><span>Profit & Loss</span>
+  </div>
+
+  <div class="sidebar-footer">v1.0 · Firebase Live ☁️</div>
+</aside>
+
+<!-- BOTTOM NAV (mobile only) -->
+<nav class="bottom-nav">
+  <div class="bottom-nav-item active" id="bn-dashboard" ontouchstart="showPage('dashboard',this);setBottomNav('bn-dashboard')" onclick="showPage('dashboard',this);setBottomNav('bn-dashboard')">
+    <span class="bn-icon">📊</span>
+    <span>Dashboard</span>
+  </div>
+  <div class="bottom-nav-item" id="bn-bookings" ontouchstart="showPage('bookings',this);setBottomNav('bn-bookings')" onclick="showPage('bookings',this);setBottomNav('bn-bookings')">
+    <span class="bn-icon">📅</span>
+    <span>Bookings</span>
+    <span class="bn-badge" id="bn-bookingBadge" style="display:none"></span>
+  </div>
+  <div class="bottom-nav-item" id="bn-invoices" ontouchstart="showPage('invoices',this);setBottomNav('bn-invoices')" onclick="showPage('invoices',this);setBottomNav('bn-invoices')">
+    <span class="bn-icon">🧾</span>
+    <span>Invoices</span>
+    <span class="bn-badge" id="bn-invoiceBadge" style="display:none;background:var(--amber);color:#000;"></span>
+  </div>
+  <div class="bottom-nav-item" id="bn-supplies" ontouchstart="showPage('supplies',this);setBottomNav('bn-supplies')" onclick="showPage('supplies',this);setBottomNav('bn-supplies')">
+    <span class="bn-icon">🛒</span>
+    <span>Supplies</span>
+  </div>
+  <div class="bottom-nav-item" id="bn-overheads" ontouchstart="showPage('overheads',this);setBottomNav('bn-overheads')" onclick="showPage('overheads',this);setBottomNav('bn-overheads')">
+    <span class="bn-icon">🏢</span>
+    <span>Overheads</span>
+  </div>
+  <div class="bottom-nav-item" id="bn-profit" ontouchstart="showPage('profit',this);setBottomNav('bn-profit')" onclick="showPage('profit',this);setBottomNav('bn-profit')">
+    <span class="bn-icon">💰</span>
+    <span>P&L</span>
+  </div>
+</nav>
+
+<!-- SAVE INDICATOR -->
+<div class="save-indicator" id="saveIndicator">☁️ Saved</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="pageTitle">Dashboard</div>
+    <div class="topbar-actions">
+      <div class="search-wrap"><input type="text" placeholder="Search..." oninput="globalSearch(this.value)"></div>
+      <button class="btn btn-red" id="addBtn" ontouchstart="handleAdd(event)" onclick="handleAdd(event)" style="min-height:44px;min-width:100px;cursor:pointer;-webkit-tap-highlight-color:rgba(0,0,0,0);touch-action:manipulation;">+ Add New</button>
+      <button class="btn btn-ghost" ontouchstart="signOut()" onclick="signOut()" style="min-height:44px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ DASHBOARD ══ -->
+    <div class="page active" id="page-dashboard">
+      <div class="stat-grid">
+        <div class="stat-card red">
+          <div class="stat-label">This Month Revenue</div>
+          <div class="stat-value" id="dash-revenue">£0</div>
+          <div class="stat-sub">From paid invoices</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-label">Net Profit</div>
+          <div class="stat-value" id="dash-profit">£0</div>
+          <div class="stat-sub">After costs this month</div>
+        </div>
+        <div class="stat-card amber">
+          <div class="stat-label">Outstanding</div>
+          <div class="stat-value" id="dash-outstanding">£0</div>
+          <div class="stat-sub">Unpaid invoices</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-label">Bookings This Month</div>
+          <div class="stat-value" id="dash-bookings">0</div>
+          <div class="stat-sub">Confirmed appointments</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+        <!-- Recent bookings -->
+        <div class="section-card">
+          <div class="section-head">
+            <div class="section-head-title">📅 Upcoming Bookings</div>
+            <button class="btn btn-ghost btn-sm" onclick="showPage('bookings',document.querySelector('[onclick*=bookings]'))">View All</button>
+          </div>
+          <table><thead><tr><th>Customer</th><th>Service</th><th>Date</th><th>Status</th></tr></thead>
+          <tbody id="dash-bookings-list"><tr><td colspan="4"><div class="empty"><span class="e-icon">📅</span>No bookings yet</div></td></tr></tbody></table>
+        </div>
+        <!-- Unpaid invoices -->
+        <div class="section-card">
+          <div class="section-head">
+            <div class="section-head-title">🧾 Unpaid Invoices</div>
+            <button class="btn btn-ghost btn-sm" onclick="showPage('invoices',document.querySelector('[onclick*=invoices]'))">View All</button>
+          </div>
+          <table><thead><tr><th>Ref</th><th>Customer</th><th>Total</th><th>Due</th></tr></thead>
+          <tbody id="dash-invoices-list"><tr><td colspan="4"><div class="empty"><span class="e-icon">🧾</span>No unpaid invoices</div></td></tr></tbody></table>
+        </div>
+        <!-- Recent supplies -->
+        <div class="section-card">
+          <div class="section-head">
+            <div class="section-head-title">🛒 Recent Supplies</div>
+          </div>
+          <table><thead><tr><th>Item</th><th>Supplier</th><th>Cost</th><th>Date</th></tr></thead>
+          <tbody id="dash-supplies-list"><tr><td colspan="4"><div class="empty"><span class="e-icon">🛒</span>No supplies logged</div></td></tr></tbody></table>
+        </div>
+        <!-- Overheads summary -->
+        <div class="section-card">
+          <div class="section-head">
+            <div class="section-head-title">🏢 Monthly Overheads</div>
+          </div>
+          <table><thead><tr><th>Overhead</th><th>Category</th><th>Monthly</th></tr></thead>
+          <tbody id="dash-overheads-list"><tr><td colspan="3"><div class="empty"><span class="e-icon">🏢</span>No overheads logged</div></td></tr></tbody></table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ BOOKINGS ══ -->
+    <div class="page" id="page-bookings">
+      <div class="section-card">
+        <div class="section-head">
+          <div class="section-head-title">📅 All Bookings</div>
+          <div style="display:flex;gap:0.5rem;">
+            <select class="btn btn-ghost btn-sm" id="bookingFilter" onchange="renderBookings()" style="cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:0.1em;text-transform:uppercase;font-size:0.72rem;">
+              <option value="">All Statuses</option>
+              <option>Confirmed</option><option>Pending</option><option>Completed</option><option>Cancelled</option>
+            </select>
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>#</th><th>Customer</th><th>Vehicle</th><th>Service</th><th>Date</th><th>Time</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="bookings-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ INVOICES ══ -->
+    <div class="page" id="page-invoices">
+      <div class="section-card">
+        <div class="section-head">
+          <div class="section-head-title">🧾 Invoices</div>
+          <select class="btn btn-ghost btn-sm" id="invoiceFilter" onchange="renderInvoices()" style="cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:0.1em;text-transform:uppercase;font-size:0.72rem;">
+            <option value="">All</option><option>Unpaid</option><option>Paid</option><option>Overdue</option>
+          </select>
+        </div>
+        <table>
+          <thead><tr><th>Ref</th><th>Customer</th><th>Vehicle</th><th>Services</th><th>Total (inc.VAT)</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="invoices-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ SUPPLIES ══ -->
+    <div class="page" id="page-supplies">
+      <div class="stat-grid" style="grid-template-columns:repeat(3,1fr);">
+        <div class="stat-card red">
+          <div class="stat-label">Total Spent on Supplies</div>
+          <div class="stat-value" id="sup-total">£0</div>
+          <div class="stat-sub">All time</div>
+        </div>
+        <div class="stat-card amber">
+          <div class="stat-label">This Month</div>
+          <div class="stat-value" id="sup-month">£0</div>
+          <div class="stat-sub">Supplies cost</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-label">Items Logged</div>
+          <div class="stat-value" id="sup-count">0</div>
+          <div class="stat-sub">Supply purchases</div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="section-head">
+          <div class="section-head-title">🛒 Supply Purchases</div>
+          <select class="btn btn-ghost btn-sm" id="supplyFilter" onchange="renderSupplies()" style="cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:0.1em;text-transform:uppercase;font-size:0.72rem;">
+            <option value="">All Categories</option>
+            <option>Brake Parts</option><option>Oils & Fluids</option><option>Filters</option>
+            <option>Tools</option><option>Consumables</option><option>Other</option>
+          </select>
+        </div>
+        <table>
+          <thead><tr><th>Item</th><th>Supplier</th><th>Category</th><th>Qty</th><th>Unit Cost</th><th>Total</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody id="supplies-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ OVERHEADS ══ -->
+    <div class="page" id="page-overheads">
+      <div class="stat-grid" style="grid-template-columns:repeat(3,1fr);">
+        <div class="stat-card red">
+          <div class="stat-label">Monthly Overheads</div>
+          <div class="stat-value" id="oh-monthly">£0</div>
+          <div class="stat-sub">Recurring costs</div>
+        </div>
+        <div class="stat-card amber">
+          <div class="stat-label">Annual Overheads</div>
+          <div class="stat-value" id="oh-annual">£0</div>
+          <div class="stat-sub">Projected yearly</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-label">Overhead Items</div>
+          <div class="stat-value" id="oh-count">0</div>
+          <div class="stat-sub">Recurring expenses</div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="section-head">
+          <div class="section-head-title">🏢 Fixed & Recurring Overheads</div>
+        </div>
+        <table>
+          <thead><tr><th>Overhead</th><th>Category</th><th>Frequency</th><th>Monthly Cost</th><th>Annual Cost</th><th>Next Due</th><th>Actions</th></tr></thead>
+          <tbody id="overheads-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ PROFIT & LOSS ══ -->
+    <div class="page" id="page-profit">
+      <div class="stat-grid">
+        <div class="stat-card green">
+          <div class="stat-label">Total Revenue</div>
+          <div class="stat-value" id="pl-revenue">£0</div>
+          <div class="stat-sub">Paid invoices</div>
+        </div>
+        <div class="stat-card red">
+          <div class="stat-label">Total Costs</div>
+          <div class="stat-value" id="pl-costs">£0</div>
+          <div class="stat-sub">Supplies + overheads</div>
+        </div>
+        <div class="stat-card amber">
+          <div class="stat-label">Gross Profit</div>
+          <div class="stat-value" id="pl-gross">£0</div>
+          <div class="stat-sub">Revenue minus costs</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-label">Profit Margin</div>
+          <div class="stat-value" id="pl-margin">0%</div>
+          <div class="stat-sub">Of total revenue</div>
+        </div>
+      </div>
+
+      <div class="profit-grid">
+        <div class="section-card">
+          <div class="section-head"><div class="section-head-title">📈 Revenue Breakdown</div></div>
+          <div style="padding:1.2rem;" id="revenue-breakdown">
+            <div class="empty"><span class="e-icon">📈</span>No data yet</div>
+          </div>
+        </div>
+        <div class="section-card">
+          <div class="section-head"><div class="section-head-title">📉 Cost Breakdown</div></div>
+          <div style="padding:1.2rem;" id="cost-breakdown">
+            <div class="empty"><span class="e-icon">📉</span>No data yet</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-head"><div class="section-head-title">📋 Monthly Summary</div></div>
+        <table>
+          <thead><tr><th>Month</th><th>Revenue</th><th>Supplies</th><th>Overheads</th><th>Profit</th><th>Margin</th></tr></thead>
+          <tbody id="monthly-summary"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- end content -->
+</div><!-- end main -->
+
+<!-- ══ MODALS ══ -->
+
+<!-- Booking Modal -->
+<div class="modal-overlay" id="modal-booking">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="booking-modal-title">New Booking</div>
+      <button class="modal-close" onclick="closeModal('modal-booking')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field-grid">
+        <div class="field"><label>Customer Name *</label><input id="b-name" type="text" placeholder="Full name"></div>
+        <div class="field"><label>Phone</label><input id="b-phone" type="tel" placeholder="07700 900000"></div>
+        <div class="field"><label>Vehicle Reg *</label><input id="b-reg" type="text" placeholder="AB12 CDE" style="text-transform:uppercase;"></div>
+        <div class="field"><label>Make & Model</label><input id="b-vehicle" type="text" placeholder="Ford Focus"></div>
+        <div class="field field-full"><label>Service Required *</label>
+          <select id="b-service">
+            <option>Full Car Service</option><option>Brake Discs & Pads</option>
+            <option>Brake Inspection</option><option>Diagnostics</option>
+            <option>Vehicle Health Check</option><option>Oil & Filter Change</option>
+            <option>Advisory Report</option><option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label>Date *</label><input id="b-date" type="date"></div>
+        <div class="field"><label>Time</label><input id="b-time" type="time" value="09:00"></div>
+        <div class="field"><label>Estimated Price (£)</label><input id="b-price" type="number" placeholder="0.00"></div>
+        <div class="field"><label>Status</label>
+          <select id="b-status"><option>Confirmed</option><option>Pending</option><option>Completed</option><option>Cancelled</option></select>
+        </div>
+        <div class="field field-full"><label>Notes</label><textarea id="b-notes" placeholder="Any additional details..."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-booking')">Cancel</button>
+      <button class="btn btn-red" onclick="saveBooking()">Save Booking</button>
+    </div>
+  </div>
+</div>
+
+<!-- Invoice Modal -->
+<div class="modal-overlay" id="modal-invoice">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">New Invoice</div>
+      <button class="modal-close" onclick="closeModal('modal-invoice')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field-grid">
+        <div class="field"><label>Customer Name *</label><input id="i-name" type="text" placeholder="Full name"></div>
+        <div class="field"><label>Vehicle Reg</label><input id="i-reg" type="text" placeholder="AB12 CDE" style="text-transform:uppercase;"></div>
+        <div class="field field-full"><label>Services Provided</label><input id="i-services" type="text" placeholder="e.g. Full service, front brake discs & pads"></div>
+        <div class="field"><label>Labour (£)</label><input id="i-labour" type="number" placeholder="0.00" oninput="calcInvoice()"></div>
+        <div class="field"><label>Parts (£)</label><input id="i-parts" type="number" placeholder="0.00" oninput="calcInvoice()"></div>
+        <div class="field field-full"><label>Total Due (inc. 20% VAT)</label><input id="i-total" type="text" readonly style="color:var(--red);font-weight:600;font-size:1.1rem;"></div>
+        <div class="field"><label>Invoice Date</label><input id="i-date" type="date"></div>
+        <div class="field"><label>Payment Due</label><input id="i-due" type="date"></div>
+        <div class="field field-full"><label>Status</label>
+          <select id="i-status"><option>Unpaid</option><option>Paid</option><option>Overdue</option></select>
+        </div>
+        <div class="field field-full"><label>Notes</label><textarea id="i-notes" placeholder="Any notes for this invoice..."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-invoice')">Cancel</button>
+      <button class="btn btn-red" onclick="saveInvoice()">Save Invoice</button>
+    </div>
+  </div>
+</div>
+
+<!-- Supply Modal -->
+<div class="modal-overlay" id="modal-supply">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Log Supply Purchase</div>
+      <button class="modal-close" onclick="closeModal('modal-supply')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field-grid">
+        <div class="field field-full"><label>Item Name *</label><input id="s-item" type="text" placeholder="e.g. Brembo front brake discs"></div>
+        <div class="field"><label>Supplier</label><input id="s-supplier" type="text" placeholder="e.g. GSF Car Parts"></div>
+        <div class="field"><label>Category</label>
+          <select id="s-cat">
+            <option>Brake Parts</option><option>Oils & Fluids</option><option>Filters</option>
+            <option>Tools</option><option>Consumables</option><option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label>Quantity</label><input id="s-qty" type="number" value="1" oninput="calcSupply()"></div>
+        <div class="field"><label>Unit Cost (£)</label><input id="s-unit" type="number" placeholder="0.00" oninput="calcSupply()"></div>
+        <div class="field field-full"><label>Total Cost</label><input id="s-total" type="text" readonly style="color:var(--red);font-weight:600;"></div>
+        <div class="field"><label>Date Purchased *</label><input id="s-date" type="date"></div>
+        <div class="field"><label>Invoice / Receipt Ref</label><input id="s-ref" type="text" placeholder="e.g. INV-12345"></div>
+        <div class="field field-full"><label>Notes</label><textarea id="s-notes" placeholder="What job is this for? Any other notes..."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-supply')">Cancel</button>
+      <button class="btn btn-red" onclick="saveSupply()">Log Purchase</button>
+    </div>
+  </div>
+</div>
+
+<!-- Overhead Modal -->
+<div class="modal-overlay" id="modal-overhead">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Add Overhead</div>
+      <button class="modal-close" onclick="closeModal('modal-overhead')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field-grid">
+        <div class="field field-full"><label>Overhead Name *</label><input id="o-name" type="text" placeholder="e.g. Garage Rent, Insurance, Electricity"></div>
+        <div class="field"><label>Category</label>
+          <select id="o-cat">
+            <option>Premises</option><option>Insurance</option><option>Utilities</option>
+            <option>Equipment</option><option>Software</option><option>Marketing</option>
+            <option>Vehicle</option><option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label>Frequency</label>
+          <select id="o-freq" onchange="calcOverhead()">
+            <option>Monthly</option><option>Quarterly</option><option>Annually</option><option>Weekly</option>
+          </select>
+        </div>
+        <div class="field"><label>Amount (£)</label><input id="o-amount" type="number" placeholder="0.00" oninput="calcOverhead()"></div>
+        <div class="field"><label>Monthly Equivalent</label><input id="o-monthly" type="text" readonly style="color:var(--amber);font-weight:600;"></div>
+        <div class="field"><label>Next Due Date</label><input id="o-due" type="date"></div>
+        <div class="field field-full"><label>Notes</label><textarea id="o-notes" placeholder="Supplier, account reference, etc."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-overhead')">Cancel</button>
+      <button class="btn btn-red" onclick="saveOverhead()">Save Overhead</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════
+// DATA STORE
+// ══════════════════════════════════════
+let data = {
+  bookings: [],
+  invoices: [],
+  supplies: [],
+  overheads: []
+};
+
+// ── SUPABASE REST + LOCAL STORAGE ──
+const SB = 'https://hzbwjjypdcejcwtwalsp.supabase.co/rest/v1';
+const SK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh6YndqanlwZGNlamN3dHdhbHNwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3NTQ0NDcsImV4cCI6MjA5NjMzMDQ0N30.XCgZ2_3SRrJYwpm43rnsPTCnE_zT6x4VzILUF_AmR1M';
+const SH = {'apikey':SK,'Authorization':'Bearer '+SK,'Content-Type':'application/json','Prefer':'return=minimal'};
+let online = false;
+
+function showStatus(msg, color) {
+  const el = document.getElementById('saveIndicator');
+  if(!el) return;
+  el.textContent = msg;
+  el.style.background = color==='green'?'var(--green)':color==='amber'?'var(--amber)':'var(--red)';
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'), 2500);
+}
+
+function showSaveIndicator() { showStatus('✅ Saved', 'green'); }
+
+function save() {
+  try { localStorage.setItem('garage_mgr', JSON.stringify(data)); } catch(e){}
+  showSaveIndicator();
+  refreshAll();
+}
+
+function fbAdd(colName, obj) {
+  obj.id = obj.id || uid();
+  obj.createdat = Date.now();
+  data[colName].unshift(obj);
+  save();
+  if(online) fetch(SB+'/'+colName, {method:'POST',headers:SH,body:JSON.stringify(obj)}).catch(()=>{});
+  return obj.id;
+}
+
+function fbUpdate(colName, id, updates) {
+  const i = data[colName].findIndex(x=>x.id===id);
+  if(i>-1) data[colName][i] = {...data[colName][i], ...updates};
+  save();
+  if(online) fetch(SB+'/'+colName+'?id=eq.'+id, {method:'PATCH',headers:SH,body:JSON.stringify(updates)}).catch(()=>{});
+}
+
+function fbDelete(colName, id) {
+  data[colName] = data[colName].filter(x=>x.id!==id);
+  save();
+  if(online) fetch(SB+'/'+colName+'?id=eq.'+id, {method:'DELETE',headers:SH}).catch(()=>{});
+}
+
+function pullFromSupabase() {
+  ['bookings','invoices','supplies','overheads'].forEach(col => {
+    fetch(SB+'/'+col+'?order=createdat.desc', {headers:SH})
+      .then(r=>r.json())
+      .then(rows=>{ if(Array.isArray(rows)){ data[col]=rows; try{localStorage.setItem('garage_mgr',JSON.stringify(data));}catch(e){} refreshAll(); }})
+      .catch(()=>{});
+  });
+}
+
+function loadData() {
+  try {
+    const saved = localStorage.getItem('garage_mgr');
+    if(saved) data = JSON.parse(saved);
+  } catch(e){}
+  refreshAll();
+  showStatus('✅ Ready','green');
+  // Test Supabase connection with retries
+  let attempts = 0;
+  function tryConnect() {
+    attempts++;
+    const controller = new AbortController();
+    const timeout = setTimeout(()=>controller.abort(), 8000);
+    fetch(SB+'/bookings?limit=1', {headers:SH, signal:controller.signal})
+      .then(r=>{
+        clearTimeout(timeout);
+        if(r.ok){
+          online=true;
+          pullFromSupabase();
+          showStatus('☁️ Live & Synced','green');
+          setInterval(pullFromSupabase,20000);
+        } else if(attempts < 4) {
+          setTimeout(tryConnect, 3000);
+        } else {
+          showStatus('📱 Local only','amber');
+        }
+      })
+      .catch(()=>{
+        clearTimeout(timeout);
+        if(attempts < 4) setTimeout(tryConnect, 3000);
+        else showStatus('📱 Local only','amber');
+      });
+  }
+  setTimeout(tryConnect, 2000);
+}
+
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+function fmt(n) { return '£' + parseFloat(n||0).toFixed(2); }
+function today() { return new Date().toISOString().split('T')[0]; }
+function monthKey(d) { return (d||'').slice(0,7); }
+function thisMonth() { return today().slice(0,7); }
+
+// ══════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════
+const pageTitles = {
+  dashboard:'Dashboard', bookings:'Bookings',
+  invoices:'Invoices', supplies:'Supplies',
+  overheads:'Overheads', profit:'Profit & Loss'
+};
+
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.bottom-nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(el) el.classList.add('active');
+  // Sync bottom nav
+  const bnEl = document.getElementById('bn-'+id);
+  if(bnEl) bnEl.classList.add('active');
+  document.getElementById('pageTitle').textContent = pageTitles[id]||id;
+  if(id==='profit') renderProfit();
+}
+
+// ══════════════════════════════════════
+// ADD BUTTON HANDLER
+// ══════════════════════════════════════
+function handleAdd(e) {
+  if(e) e.preventDefault();
+  const page = document.querySelector('.page.active').id.replace('page-','');
+  const map = { dashboard:'booking', bookings:'booking', invoices:'invoice', supplies:'supply', overheads:'overhead', profit:'invoice' };
+  openModal('modal-'+(map[page]||'booking'));
+}
+
+// ══════════════════════════════════════
+// MODALS
+// ══════════════════════════════════════
+function openModal(id) {
+  // Set today's date on relevant fields
+  ['b-date','i-date','i-due','s-date','o-due'].forEach(f => {
+    const el = document.getElementById(f);
+    if(el && !el.value) el.value = today();
+  });
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// Close on overlay click
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if(e.target===o) o.classList.remove('open'); });
+});
+
+// ══════════════════════════════════════
+// BOOKINGS
+// ══════════════════════════════════════
+let editBookingId = null;
+function saveBooking() {
+  const name = document.getElementById('b-name').value.trim();
+  if(!name) { alert('Customer name is required.'); return; }
+  const b = {
+    id: editBookingId || uid(),
+    name, phone: document.getElementById('b-phone').value,
+    reg: document.getElementById('b-reg').value.toUpperCase(),
+    vehicle: document.getElementById('b-vehicle').value,
+    service: document.getElementById('b-service').value,
+    date: document.getElementById('b-date').value,
+    time: document.getElementById('b-time').value,
+    price: parseFloat(document.getElementById('b-price').value)||0,
+    status: document.getElementById('b-status').value,
+    notes: document.getElementById('b-notes').value,
+  };
+  if(editBookingId) {
+    const {id, ...rest} = b;
+    fbUpdate('bookings', editBookingId, rest);
+  } else {
+    fbAdd('bookings', b);
+  }
+  editBookingId = null;
+  closeModal('modal-booking');
+  clearModal('modal-booking');
+}
+
+function editBooking(id) {
+  const b = data.bookings.find(x=>x.id===id);
+  if(!b) return;
+  editBookingId = id;
+  document.getElementById('booking-modal-title').textContent = 'Edit Booking';
+  document.getElementById('b-name').value = b.name;
+  document.getElementById('b-phone').value = b.phone;
+  document.getElementById('b-reg').value = b.reg;
+  document.getElementById('b-vehicle').value = b.vehicle;
+  document.getElementById('b-service').value = b.service;
+  document.getElementById('b-date').value = b.date;
+  document.getElementById('b-time').value = b.time;
+  document.getElementById('b-price').value = b.price;
+  document.getElementById('b-status').value = b.status;
+  document.getElementById('b-notes').value = b.notes;
+  openModal('modal-booking');
+}
+
+function deleteBooking(id) {
+  if(!confirm('Delete this booking?')) return;
+  fbDelete('bookings', id);
+}
+
+function renderBookings() {
+  const filter = document.getElementById('bookingFilter')?.value||'';
+  const list = filter ? data.bookings.filter(b=>b.status===filter) : data.bookings;
+  const tbody = document.getElementById('bookings-body');
+  if(!list.length) { tbody.innerHTML = `<tr><td colspan="8"><div class="empty"><span class="e-icon">📅</span>No bookings found</div></td></tr>`; return; }
+  tbody.innerHTML = list.map((b,i)=>`
+    <tr>
+      <td class="td-mono" style="color:var(--dim);">#${String(i+1).padStart(3,'0')}</td>
+      <td class="td-strong">${b.name}</td>
+      <td>${b.reg} ${b.vehicle?'· '+b.vehicle:''}</td>
+      <td>${b.service}</td>
+      <td class="td-mono">${b.date||'—'}</td>
+      <td class="td-mono">${b.time||'—'}</td>
+      <td>${statusBadge(b.status)}</td>
+      <td>
+        <button class="act-btn" onclick="editBooking('${b.id}')" title="Edit">✏️</button>
+        <button class="act-btn" onclick="convertToInvoice('${b.id}')" title="Create Invoice">🧾</button>
+        <button class="act-btn del" onclick="deleteBooking('${b.id}')" title="Delete">🗑</button>
+      </td>
+    </tr>`).join('');
+}
+
+function convertToInvoice(bookingId) {
+  const b = data.bookings.find(x=>x.id===bookingId);
+  if(!b) return;
+  document.getElementById('i-name').value = b.name;
+  document.getElementById('i-reg').value = b.reg;
+  document.getElementById('i-services').value = b.service;
+  document.getElementById('i-labour').value = b.price;
+  document.getElementById('i-date').value = today();
+  document.getElementById('i-due').value = today();
+  calcInvoice();
+  openModal('modal-invoice');
+}
+
+// ══════════════════════════════════════
+// INVOICES
+// ══════════════════════════════════════
+function calcInvoice() {
+  const labour = parseFloat(document.getElementById('i-labour').value)||0;
+  const parts = parseFloat(document.getElementById('i-parts').value)||0;
+  const sub = labour + parts;
+  const vat = sub * 0.2;
+  document.getElementById('i-subtotal').value = fmt(sub);
+  document.getElementById('i-vat').value = fmt(vat);
+  document.getElementById('i-total').value = fmt(sub+vat);
+}
+
+function saveInvoice() {
+  const name = document.getElementById('i-name').value.trim();
+  if(!name) { alert('Customer name is required.'); return; }
+  const labour = parseFloat(document.getElementById('i-labour').value)||0;
+  const parts = parseFloat(document.getElementById('i-parts').value)||0;
+  const sub = labour+parts;
+  const inv = {
+    id: uid(),
+    ref: 'INV-' + new Date().getFullYear() + '-' + String(data.invoices.length+1).padStart(4,'0'),
+    name, reg: document.getElementById('i-reg').value.toUpperCase(),
+    services: document.getElementById('i-services').value,
+    labour, parts, subtotal: sub, vat: sub*0.2, total: sub*1.2,
+    date: document.getElementById('i-date').value,
+    due: document.getElementById('i-due').value,
+    status: document.getElementById('i-status').value,
+    notes: document.getElementById('i-notes').value,
+  };
+  fbAdd('invoices', inv);
+  closeModal('modal-invoice');
+  clearModal('modal-invoice');
+}
+
+function markPaid(id) {
+  fbUpdate('invoices', id, {status:'Paid'});
+}
+
+function deleteInvoice(id) {
+  if(!confirm('Delete this invoice?')) return;
+  fbDelete('invoices', id);
+}
+
+function renderInvoices() {
+  const filter = document.getElementById('invoiceFilter')?.value||'';
+  const list = filter ? data.invoices.filter(i=>i.status===filter) : data.invoices;
+  const tbody = document.getElementById('invoices-body');
+  if(!list.length) { tbody.innerHTML = `<tr><td colspan="10"><div class="empty"><span class="e-icon">🧾</span>No invoices found</div></td></tr>`; return; }
+  tbody.innerHTML = list.map(i=>`
+    <tr>
+      <td class="td-mono" style="color:var(--dim);">${i.ref}</td>
+      <td class="td-strong">${i.name}</td>
+      <td class="td-mono">${i.reg||'—'}</td>
+      <td style="max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${i.services||'—'}</td>
+      <td class="td-mono td-strong" style="color:var(--red);">${fmt(i.total)}</td>
+      <td class="td-mono">${i.date||'—'}</td>
+      <td>${statusBadge(i.status)}</td>
+      <td>
+        ${i.status!=='Paid'?`<button class="act-btn" onclick="markPaid('${i.id}')" title="Mark Paid">✅</button>`:''}
+        <button class="act-btn del" onclick="deleteInvoice('${i.id}')" title="Delete">🗑</button>
+        <button class="act-btn" onclick="editInvoiceStatus('${i.id}')" title="Edit Status">✏️</button>
+      </td>
+    </tr>`).join('');
+}
+
+// ══════════════════════════════════════
+// SUPPLIES
+// ══════════════════════════════════════
+function calcSupply() {
+  const qty = parseFloat(document.getElementById('s-qty').value)||0;
+  const unit = parseFloat(document.getElementById('s-unit').value)||0;
+  document.getElementById('s-total').value = fmt(qty*unit);
+}
+
+function saveSupply() {
+  const item = document.getElementById('s-item').value.trim();
+  if(!item) { alert('Item name is required.'); return; }
+  const qty = parseFloat(document.getElementById('s-qty').value)||1;
+  const unit = parseFloat(document.getElementById('s-unit').value)||0;
+  const s = {
+    id: uid(), item,
+    supplier: document.getElementById('s-supplier').value,
+    category: document.getElementById('s-cat').value,
+    qty, unit, total: qty*unit,
+    date: document.getElementById('s-date').value,
+    ref: document.getElementById('s-ref').value,
+    notes: document.getElementById('s-notes').value,
+  };
+  fbAdd('supplies', s);
+  closeModal('modal-supply');
+  clearModal('modal-supply');
+}
+
+function deleteSupply(id) {
+  if(!confirm('Delete this supply entry?')) return;
+  fbDelete('supplies', id);
+}
+
+function renderSupplies() {
+  const filter = document.getElementById('supplyFilter')?.value||'';
+  const list = filter ? data.supplies.filter(s=>s.category===filter) : data.supplies;
+  const tbody = document.getElementById('supplies-body');
+  if(!list.length) { tbody.innerHTML = `<tr><td colspan="8"><div class="empty"><span class="e-icon">🛒</span>No supplies logged yet</div></td></tr>`; return; }
+  tbody.innerHTML = list.map(s=>`
+    <tr>
+      <td class="td-strong">${s.item}</td>
+      <td>${s.supplier||'—'}</td>
+      <td><span class="badge badge-blue">${s.category}</span></td>
+      <td class="td-mono">${s.qty}</td>
+      <td class="td-mono">${fmt(s.unit)}</td>
+      <td class="td-mono td-strong" style="color:var(--red);">${fmt(s.total)}</td>
+      <td class="td-mono">${s.date||'—'}</td>
+      <td><button class="act-btn del" onclick="deleteSupply('${s.id}')" title="Delete">🗑</button></td>
+    </tr>`).join('');
+  // Update supply stats
+  const all = data.supplies;
+  document.getElementById('sup-total').textContent = fmt(all.reduce((a,s)=>a+s.total,0));
+  document.getElementById('sup-month').textContent = fmt(all.filter(s=>monthKey(s.date)===thisMonth()).reduce((a,s)=>a+s.total,0));
+  document.getElementById('sup-count').textContent = all.length;
+}
+
+// ══════════════════════════════════════
+// OVERHEADS
+// ══════════════════════════════════════
+function calcOverhead() {
+  const amount = parseFloat(document.getElementById('o-amount').value)||0;
+  const freq = document.getElementById('o-freq').value;
+  let monthly = amount;
+  if(freq==='Quarterly') monthly = amount/3;
+  else if(freq==='Annually') monthly = amount/12;
+  else if(freq==='Weekly') monthly = amount*4.33;
+  document.getElementById('o-monthly').value = fmt(monthly);
+}
+
+function saveOverhead() {
+  const name = document.getElementById('o-name').value.trim();
+  if(!name) { alert('Overhead name is required.'); return; }
+  const amount = parseFloat(document.getElementById('o-amount').value)||0;
+  const freq = document.getElementById('o-freq').value;
+  let monthly = amount;
+  if(freq==='Quarterly') monthly = amount/3;
+  else if(freq==='Annually') monthly = amount/12;
+  else if(freq==='Weekly') monthly = amount*4.33;
+  const o = {
+    id: uid(), name,
+    category: document.getElementById('o-cat').value,
+    freq, amount, monthly, annual: monthly*12,
+    due: document.getElementById('o-due').value,
+    notes: document.getElementById('o-notes').value,
+  };
+  fbAdd('overheads', o);
+  closeModal('modal-overhead');
+  clearModal('modal-overhead');
+}
+
+function deleteOverhead(id) {
+  if(!confirm('Delete this overhead?')) return;
+  fbDelete('overheads', id);
+}
+
+function renderOverheads() {
+  const tbody = document.getElementById('overheads-body');
+  if(!data.overheads.length) { tbody.innerHTML = `<tr><td colspan="7"><div class="empty"><span class="e-icon">🏢</span>No overheads logged yet</div></td></tr>`; return; }
+  tbody.innerHTML = data.overheads.map(o=>`
+    <tr>
+      <td class="td-strong">${o.name}</td>
+      <td><span class="badge badge-grey">${o.category}</span></td>
+      <td>${o.freq}</td>
+      <td class="td-mono td-strong" style="color:var(--amber);">${fmt(o.monthly)}</td>
+      <td class="td-mono">${fmt(o.annual)}</td>
+      <td class="td-mono">${o.due||'—'}</td>
+      <td><button class="act-btn del" onclick="deleteOverhead('${o.id}')" title="Delete">🗑</button></td>
+    </tr>`).join('');
+  const total = data.overheads.reduce((a,o)=>a+o.monthly,0);
+  document.getElementById('oh-monthly').textContent = fmt(total);
+  document.getElementById('oh-annual').textContent = fmt(total*12);
+  document.getElementById('oh-count').textContent = data.overheads.length;
+}
+
+// ══════════════════════════════════════
+// PROFIT & LOSS
+// ══════════════════════════════════════
+function renderProfit() {
+  const paidInvoices = data.invoices.filter(i=>i.status==='Paid');
+  const revenue = paidInvoices.reduce((a,i)=>a+i.total,0);
+  const supplyCosts = data.supplies.reduce((a,s)=>a+s.total,0);
+  const ohCosts = data.overheads.reduce((a,o)=>a+o.monthly,0) * 12;
+  const totalCosts = supplyCosts + ohCosts;
+  const gross = revenue - totalCosts;
+  const margin = revenue ? (gross/revenue*100) : 0;
+
+  document.getElementById('pl-revenue').textContent = fmt(revenue);
+  document.getElementById('pl-costs').textContent = fmt(totalCosts);
+  document.getElementById('pl-gross').textContent = fmt(gross);
+  document.getElementById('pl-margin').textContent = margin.toFixed(1)+'%';
+
+  // Revenue breakdown
+  const revEl = document.getElementById('revenue-breakdown');
+  if(!paidInvoices.length) { revEl.innerHTML = `<div class="empty"><span class="e-icon">📈</span>No paid invoices yet</div>`; }
+  else {
+    const byService = {};
+    paidInvoices.forEach(i=>{ byService[i.services||'Other'] = (byService[i.services||'Other']||0)+i.total; });
+    revEl.innerHTML = Object.entries(byService).map(([k,v])=>`
+      <div class="profit-bar-wrap">
+        <div class="profit-bar-label"><span>${k}</span><span>${fmt(v)}</span></div>
+        <div class="profit-bar-bg"><div class="profit-bar-fill green" style="width:${Math.min(100,v/revenue*100)}%"></div></div>
+      </div>`).join('');
+  }
+
+  // Cost breakdown
+  const costEl = document.getElementById('cost-breakdown');
+  costEl.innerHTML = `
+    <div class="profit-bar-wrap">
+      <div class="profit-bar-label"><span>Supplies</span><span>${fmt(supplyCosts)}</span></div>
+      <div class="profit-bar-bg"><div class="profit-bar-fill" style="width:${totalCosts?Math.min(100,supplyCosts/totalCosts*100):0}%"></div></div>
+    </div>
+    <div class="profit-bar-wrap">
+      <div class="profit-bar-label"><span>Overheads</span><span>${fmt(ohCosts)}</span></div>
+      <div class="profit-bar-bg"><div class="profit-bar-fill" style="width:${totalCosts?Math.min(100,ohCosts/totalCosts*100):0}%"></div></div>
+    </div>`;
+
+  // Monthly summary
+  const months = {};
+  paidInvoices.forEach(i=>{ const m=monthKey(i.date); months[m]=(months[m]||{rev:0,sup:0}); months[m].rev+=i.total; });
+  data.supplies.forEach(s=>{ const m=monthKey(s.date); months[m]=(months[m]||{rev:0,sup:0}); months[m].sup+=s.total; });
+  const tbody = document.getElementById('monthly-summary');
+  const moh = data.overheads.reduce((a,o)=>a+o.monthly,0);
+  const entries = Object.entries(months).sort((a,b)=>b[0].localeCompare(a[0]));
+  if(!entries.length) { tbody.innerHTML = `<tr><td colspan="6"><div class="empty">No data yet</div></td></tr>`; return; }
+  tbody.innerHTML = entries.map(([m,v])=>{
+    const profit = v.rev - v.sup - moh;
+    const marg = v.rev ? (profit/v.rev*100).toFixed(1)+'%' : '—';
+    return `<tr>
+      <td class="td-mono td-strong">${m}</td>
+      <td class="td-mono" style="color:var(--green);">${fmt(v.rev)}</td>
+      <td class="td-mono" style="color:var(--red);">${fmt(v.sup)}</td>
+      <td class="td-mono" style="color:var(--amber);">${fmt(moh)}</td>
+      <td class="td-mono td-strong" style="color:${profit>=0?'var(--green)':'var(--red)'};">${fmt(profit)}</td>
+      <td class="td-mono">${marg}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════
+function renderDashboard() {
+  // Stats
+  const thisMonthInvoices = data.invoices.filter(i=>i.status==='Paid'&&monthKey(i.date)===thisMonth());
+  const revenue = thisMonthInvoices.reduce((a,i)=>a+i.total,0);
+  const thisMonthSupplies = data.supplies.filter(s=>monthKey(s.date)===thisMonth()).reduce((a,s)=>a+s.total,0);
+  const ohMonthly = data.overheads.reduce((a,o)=>a+o.monthly,0);
+  const profit = revenue - thisMonthSupplies - ohMonthly;
+  const outstanding = data.invoices.filter(i=>i.status!=='Paid').reduce((a,i)=>a+i.total,0);
+  const bookingsThisMonth = data.bookings.filter(b=>monthKey(b.date)===thisMonth()&&b.status!=='Cancelled').length;
+
+  document.getElementById('dash-revenue').textContent = fmt(revenue);
+  document.getElementById('dash-profit').textContent = fmt(profit);
+  document.getElementById('dash-outstanding').textContent = fmt(outstanding);
+  document.getElementById('dash-bookings').textContent = bookingsThisMonth;
+
+  // Upcoming bookings
+  const upcoming = data.bookings.filter(b=>b.status!=='Cancelled'&&b.status!=='Completed').slice(0,5);
+  const bTbody = document.getElementById('dash-bookings-list');
+  bTbody.innerHTML = upcoming.length ? upcoming.map(b=>`
+    <tr>
+      <td class="td-strong">${b.name}</td>
+      <td>${b.service}</td>
+      <td class="td-mono">${b.date||'—'}</td>
+      <td>${statusBadge(b.status)}</td>
+    </tr>`).join('') : `<tr><td colspan="4"><div class="empty"><span class="e-icon">📅</span>No upcoming bookings</div></td></tr>`;
+
+  // Unpaid invoices
+  const unpaid = data.invoices.filter(i=>i.status!=='Paid').slice(0,5);
+  const iTbody = document.getElementById('dash-invoices-list');
+  iTbody.innerHTML = unpaid.length ? unpaid.map(i=>`
+    <tr>
+      <td class="td-mono" style="color:var(--dim);">${i.ref}</td>
+      <td class="td-strong">${i.name}</td>
+      <td class="td-mono" style="color:var(--amber);">${fmt(i.total)}</td>
+      <td>${statusBadge(i.status)}</td>
+    </tr>`).join('') : `<tr><td colspan="4"><div class="empty"><span class="e-icon">🧾</span>No unpaid invoices</div></td></tr>`;
+
+  // Recent supplies
+  const recentSup = data.supplies.slice(0,4);
+  const sTbody = document.getElementById('dash-supplies-list');
+  sTbody.innerHTML = recentSup.length ? recentSup.map(s=>`
+    <tr>
+      <td class="td-strong">${s.item}</td>
+      <td>${s.supplier||'—'}</td>
+      <td class="td-mono" style="color:var(--red);">${fmt(s.total)}</td>
+      <td class="td-mono">${s.date||'—'}</td>
+    </tr>`).join('') : `<tr><td colspan="4"><div class="empty"><span class="e-icon">🛒</span>No supplies yet</div></td></tr>`;
+
+  // Overheads
+  const oTbody = document.getElementById('dash-overheads-list');
+  oTbody.innerHTML = data.overheads.length ? data.overheads.slice(0,5).map(o=>`
+    <tr>
+      <td class="td-strong">${o.name}</td>
+      <td><span class="badge badge-grey">${o.category}</span></td>
+      <td class="td-mono" style="color:var(--amber);">${fmt(o.monthly)}/mo</td>
+    </tr>`).join('') : `<tr><td colspan="3"><div class="empty"><span class="e-icon">🏢</span>No overheads yet</div></td></tr>`;
+
+  // Badges
+  document.getElementById('bookingBadge').textContent = data.bookings.filter(b=>b.status==='Pending').length||'';
+  document.getElementById('invoiceBadge').textContent = data.invoices.filter(i=>i.status==='Unpaid'||i.status==='Overdue').length||'';
+}
+
+// ══════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════
+function statusBadge(s) {
+  const map = {
+    'Confirmed':'badge-green','Completed':'badge-blue',
+    'Pending':'badge-amber','Cancelled':'badge-grey',
+    'Paid':'badge-green','Unpaid':'badge-amber','Overdue':'badge-red'
+  };
+  return `<span class="badge ${map[s]||'badge-grey'}">${s}</span>`;
+}
+
+function clearModal(id) {
+  document.querySelectorAll(`#${id} input:not([readonly]), #${id} select, #${id} textarea`).forEach(el=>{
+    if(el.type==='number') el.value='';
+    else if(el.tagName==='SELECT') el.selectedIndex=0;
+    else el.value='';
+  });
+}
+
+function globalSearch(q) {
+  // Basic search — highlights matching rows
+  q = q.toLowerCase();
+  document.querySelectorAll('tbody tr').forEach(row=>{
+    row.style.display = (!q||row.textContent.toLowerCase().includes(q)) ? '' : 'none';
+  });
+}
+
+function editInvoiceStatus(id) {
+  const inv = data.invoices.find(x=>x.id===id);
+  if(!inv) return;
+  const statuses = ['Unpaid','Paid','Overdue'];
+  const current = statuses.indexOf(inv.status);
+  const next = statuses[(current+1) % statuses.length];
+  fbUpdate('invoices', id, {status:next});
+}
+
+function refreshAll() {
+  renderDashboard();
+  renderBookings();
+  renderInvoices();
+  renderSupplies();
+  renderOverheads();
+  // Sync bottom nav badges
+  const pb = data.bookings.filter(b=>b.status==='Pending').length;
+  const ib = data.invoices.filter(i=>i.status==='Unpaid'||i.status==='Overdue').length;
+  const bnBb = document.getElementById('bn-bookingBadge');
+  const bnIb = document.getElementById('bn-invoiceBadge');
+  if(bnBb){ bnBb.textContent=pb; bnBb.style.display=pb?'block':'none'; }
+  if(bnIb){ bnIb.textContent=ib; bnIb.style.display=ib?'block':'none'; }
+}
+
+function setBottomNav(id) {
+  document.querySelectorAll('.bottom-nav-item').forEach(el=>el.classList.remove('active'));
+  const el = document.getElementById(id);
+  if(el) el.classList.add('active');
+  // Also sync sidebar
+  const pageId = id.replace('bn-','');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const sideEl = document.querySelector(`.nav-item[onclick*="${pageId}"]`);
+  if(sideEl) sideEl.classList.add('active');
+}
+
+// ── SIGN OUT ──
+function signOut() {
+  sessionStorage.removeItem('garage_auth');
+  location.reload();
+}
+
+// ── LOGIN ──
+const USERS = { 'stephen':'garage2024', 'neil':'garage2024' };
+
+function doLogin() {
+  const user = document.getElementById('loginUser').value.trim().toLowerCase();
+  const pass = document.getElementById('loginPass').value;
+  const err = document.getElementById('loginError');
+  if(USERS[user] && USERS[user]===pass) {
+    document.getElementById('loginScreen').classList.add('hidden');
+    sessionStorage.setItem('garage_auth', user);
+    err.classList.remove('show');
+    loadData();
+  } else {
+    err.classList.add('show');
+    document.getElementById('loginPass').value='';
+  }
+}
+
+function checkLogin() {
+  const auth = sessionStorage.getItem('garage_auth');
+  if(auth && USERS[auth]) {
+    document.getElementById('loginScreen').classList.add('hidden');
+    loadData();
+  }
+}
+
+// Init
+checkLogin();
+</script>
+</body>
+</html>
