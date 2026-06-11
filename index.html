@@ -1160,6 +1160,7 @@ function renderInvoices() {
       <td>${statusBadge(i.status)}</td>
       <td>
         ${i.status!=='Paid'?`<button class="act-btn" onclick="markPaid('${i.id}')" title="Mark Paid">✅</button>`:''}
+        <button class="act-btn" onclick="exportInvoicePDF('${i.id}')" title="Export PDF">📄</button>
         <button class="act-btn del" onclick="deleteInvoice('${i.id}')" title="Delete">🗑</button>
         <button class="act-btn" onclick="editInvoiceStatus('${i.id}')" title="Edit Status">✏️</button>
       </td>
@@ -1435,6 +1436,98 @@ function globalSearch(q) {
   document.querySelectorAll('tbody tr').forEach(row=>{
     row.style.display = (!q||row.textContent.toLowerCase().includes(q)) ? '' : 'none';
   });
+}
+
+function exportInvoicePDF(id) {
+  const inv = data.invoices.find(x=>x.id===id);
+  if(!inv) return;
+  const win = window.open('', '_blank');
+  win.document.write(`<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Invoice ${inv.ref}</title>
+<style>
+  body{font-family:Arial,sans-serif;color:#111;padding:2rem;max-width:700px;margin:0 auto;}
+  .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2rem;padding-bottom:1rem;border-bottom:3px solid #d42b2b;}
+  .biz-name{font-size:1.8rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;}
+  .biz-name span{color:#d42b2b;}
+  .inv-title{font-size:2rem;font-weight:900;color:#d42b2b;text-align:right;}
+  .inv-ref{font-size:0.85rem;color:#666;text-align:right;margin-top:0.25rem;}
+  .details{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2rem;}
+  .detail-box h4{font-size:0.75rem;text-transform:uppercase;letter-spacing:0.15em;color:#999;margin-bottom:0.5rem;}
+  .detail-box p{font-size:0.95rem;line-height:1.6;}
+  table{width:100%;border-collapse:collapse;margin-bottom:1.5rem;}
+  th{background:#f5f5f5;padding:0.6rem 1rem;text-align:left;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.1em;color:#666;border-bottom:2px solid #ddd;}
+  td{padding:0.7rem 1rem;border-bottom:1px solid #eee;font-size:0.92rem;}
+  .total-section{text-align:right;}
+  .total-row{display:flex;justify-content:flex-end;gap:2rem;padding:0.4rem 0;}
+  .total-label{font-size:0.85rem;color:#666;width:120px;text-align:right;}
+  .total-value{font-size:0.95rem;width:80px;text-align:right;}
+  .grand-total{font-size:1.2rem;font-weight:900;color:#d42b2b;border-top:2px solid #d42b2b;padding-top:0.5rem;margin-top:0.25rem;}
+  .status-badge{display:inline-block;padding:0.3rem 1rem;font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;}
+  .status-paid{background:#d4edda;color:#155724;}
+  .status-unpaid{background:#fff3cd;color:#856404;}
+  .status-overdue{background:#f8d7da;color:#721c24;}
+  .footer{margin-top:3rem;padding-top:1rem;border-top:1px solid #ddd;font-size:0.78rem;color:#999;text-align:center;}
+  @media print{body{padding:1rem;} .no-print{display:none;}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div>
+    <div class="biz-name">AUTO <span>SERVICES</span></div>
+    <div style="font-size:0.82rem;color:#666;margin-top:0.25rem;">Professional Car Servicing & Brake Specialists</div>
+  </div>
+  <div>
+    <div class="inv-title">INVOICE</div>
+    <div class="inv-ref">${inv.ref}</div>
+    <div class="inv-ref">Date: ${inv.date}</div>
+    <div style="margin-top:0.5rem;">
+      <span class="status-badge status-${(inv.status||'unpaid').toLowerCase()}">${inv.status||'Unpaid'}</span>
+    </div>
+  </div>
+</div>
+
+<div class="details">
+  <div class="detail-box">
+    <h4>Bill To</h4>
+    <p><strong>${inv.name}</strong><br>
+    ${inv.reg ? 'Vehicle: '+inv.reg : ''}</p>
+  </div>
+  <div class="detail-box">
+    <h4>Payment Due</h4>
+    <p>${inv.due || inv.date}</p>
+  </div>
+</div>
+
+<table>
+  <thead><tr><th>Description</th><th style="text-align:right;">Amount</th></tr></thead>
+  <tbody>
+    <tr><td>${inv.services || 'Services provided'}</td><td style="text-align:right;">£${parseFloat(inv.subtotal||0).toFixed(2)}</td></tr>
+  </tbody>
+</table>
+
+<div class="total-section">
+  <div class="total-row"><span class="total-label">Subtotal</span><span class="total-value">£${parseFloat(inv.subtotal||0).toFixed(2)}</span></div>
+  <div class="total-row"><span class="total-label">VAT (20%)</span><span class="total-value">£${parseFloat(inv.vat||0).toFixed(2)}</span></div>
+  <div class="total-row grand-total"><span class="total-label">Total Due</span><span class="total-value">£${parseFloat(inv.total||0).toFixed(2)}</span></div>
+</div>
+
+${inv.notes ? `<div style="margin-top:1.5rem;padding:1rem;background:#f9f9f9;border-left:3px solid #d42b2b;"><strong>Notes:</strong><br>${inv.notes}</div>` : ''}
+
+<div class="footer">
+  <p>Thank you for your business. Payment due within 14 days.</p>
+  <p style="margin-top:0.25rem;">12-month / 12,000-mile warranty on all parts and labour.</p>
+</div>
+
+<div class="no-print" style="text-align:center;margin-top:2rem;">
+  <button onclick="window.print()" style="background:#d42b2b;color:#fff;border:none;padding:0.75rem 2rem;font-size:1rem;cursor:pointer;margin-right:1rem;">🖨 Print / Save PDF</button>
+  <button onclick="window.close()" style="background:#eee;border:none;padding:0.75rem 2rem;font-size:1rem;cursor:pointer;">Close</button>
+</div>
+</body>
+</html>`);
+  win.document.close();
 }
 
 function editInvoiceStatus(id) {
