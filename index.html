@@ -455,36 +455,30 @@ tr:hover td{background:rgba(255,255,255,0.02);color:var(--white);}
     <span class="icon">💰</span><span>Profit & Loss</span>
   </div>
 
-  <div class="sidebar-footer">v1.0 · Firebase Live ☁️</div>
+  <div class="sidebar-footer">v1.1 · Cloud Sync ☁️</div>
 </aside>
 
 <!-- BOTTOM NAV (mobile only) -->
 <nav class="bottom-nav">
   <div class="bottom-nav-item active" id="bn-dashboard" ontouchstart="showPage('dashboard',this);setBottomNav('bn-dashboard')" onclick="showPage('dashboard',this);setBottomNav('bn-dashboard')">
-    <span class="bn-icon">📊</span>
-    <span>Dashboard</span>
+    <span class="bn-icon">📊</span><span>Dashboard</span>
   </div>
   <div class="bottom-nav-item" id="bn-bookings" ontouchstart="showPage('bookings',this);setBottomNav('bn-bookings')" onclick="showPage('bookings',this);setBottomNav('bn-bookings')">
-    <span class="bn-icon">📅</span>
-    <span>Bookings</span>
+    <span class="bn-icon">📅</span><span>Bookings</span>
     <span class="bn-badge" id="bn-bookingBadge" style="display:none"></span>
   </div>
   <div class="bottom-nav-item" id="bn-invoices" ontouchstart="showPage('invoices',this);setBottomNav('bn-invoices')" onclick="showPage('invoices',this);setBottomNav('bn-invoices')">
-    <span class="bn-icon">🧾</span>
-    <span>Invoices</span>
+    <span class="bn-icon">🧾</span><span>Invoices</span>
     <span class="bn-badge" id="bn-invoiceBadge" style="display:none;background:var(--amber);color:#000;"></span>
   </div>
   <div class="bottom-nav-item" id="bn-supplies" ontouchstart="showPage('supplies',this);setBottomNav('bn-supplies')" onclick="showPage('supplies',this);setBottomNav('bn-supplies')">
-    <span class="bn-icon">🛒</span>
-    <span>Supplies</span>
+    <span class="bn-icon">🛒</span><span>Supplies</span>
   </div>
   <div class="bottom-nav-item" id="bn-overheads" ontouchstart="showPage('overheads',this);setBottomNav('bn-overheads')" onclick="showPage('overheads',this);setBottomNav('bn-overheads')">
-    <span class="bn-icon">🏢</span>
-    <span>Overheads</span>
+    <span class="bn-icon">🏢</span><span>Overheads</span>
   </div>
   <div class="bottom-nav-item" id="bn-profit" ontouchstart="showPage('profit',this);setBottomNav('bn-profit')" onclick="showPage('profit',this);setBottomNav('bn-profit')">
-    <span class="bn-icon">💰</span>
-    <span>P&L</span>
+    <span class="bn-icon">💰</span><span>P&L</span>
   </div>
 </nav>
 
@@ -530,7 +524,6 @@ tr:hover td{background:rgba(255,255,255,0.02);color:var(--white);}
       </div>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
-        <!-- Recent bookings -->
         <div class="section-card">
           <div class="section-head">
             <div class="section-head-title">📅 Upcoming Bookings</div>
@@ -539,7 +532,6 @@ tr:hover td{background:rgba(255,255,255,0.02);color:var(--white);}
           <table><thead><tr><th>Customer</th><th>Service</th><th>Date</th><th>Status</th></tr></thead>
           <tbody id="dash-bookings-list"><tr><td colspan="4"><div class="empty"><span class="e-icon">📅</span>No bookings yet</div></td></tr></tbody></table>
         </div>
-        <!-- Unpaid invoices -->
         <div class="section-card">
           <div class="section-head">
             <div class="section-head-title">🧾 Unpaid Invoices</div>
@@ -548,19 +540,13 @@ tr:hover td{background:rgba(255,255,255,0.02);color:var(--white);}
           <table><thead><tr><th>Ref</th><th>Customer</th><th>Total</th><th>Due</th></tr></thead>
           <tbody id="dash-invoices-list"><tr><td colspan="4"><div class="empty"><span class="e-icon">🧾</span>No unpaid invoices</div></td></tr></tbody></table>
         </div>
-        <!-- Recent supplies -->
         <div class="section-card">
-          <div class="section-head">
-            <div class="section-head-title">🛒 Recent Supplies</div>
-          </div>
+          <div class="section-head"><div class="section-head-title">🛒 Recent Supplies</div></div>
           <table><thead><tr><th>Item</th><th>Supplier</th><th>Cost</th><th>Date</th></tr></thead>
           <tbody id="dash-supplies-list"><tr><td colspan="4"><div class="empty"><span class="e-icon">🛒</span>No supplies logged</div></td></tr></tbody></table>
         </div>
-        <!-- Overheads summary -->
         <div class="section-card">
-          <div class="section-head">
-            <div class="section-head-title">🏢 Monthly Overheads</div>
-          </div>
+          <div class="section-head"><div class="section-head-title">🏢 Monthly Overheads</div></div>
           <table><thead><tr><th>Overhead</th><th>Category</th><th>Monthly</th></tr></thead>
           <tbody id="dash-overheads-list"><tr><td colspan="3"><div class="empty"><span class="e-icon">🏢</span>No overheads logged</div></td></tr></tbody></table>
         </div>
@@ -657,9 +643,7 @@ tr:hover td{background:rgba(255,255,255,0.02);color:var(--white);}
         </div>
       </div>
       <div class="section-card">
-        <div class="section-head">
-          <div class="section-head-title">🏢 Fixed & Recurring Overheads</div>
-        </div>
+        <div class="section-head"><div class="section-head-title">🏢 Fixed & Recurring Overheads</div></div>
         <table>
           <thead><tr><th>Overhead</th><th>Category</th><th>Frequency</th><th>Monthly Cost</th><th>Annual Cost</th><th>Next Due</th><th>Actions</th></tr></thead>
           <tbody id="overheads-body"></tbody>
@@ -744,7 +728,8 @@ tr:hover td{background:rgba(255,255,255,0.02);color:var(--white);}
         </div>
         <div class="field"><label>Date *</label><input id="b-date" type="date"></div>
         <div class="field"><label>Time</label><input id="b-time" type="time" value="09:00"></div>
-        <div class="field"><label>Estimated Price (£)</label><input id="b-price" type="number" placeholder="0.00"></div>
+        <!-- CHANGED: "Estimated Price" → "Total Price" -->
+        <div class="field"><label>Total Price (£)</label><input id="b-price" type="number" placeholder="0.00"></div>
         <div class="field"><label>Status</label>
           <select id="b-status"><option>Confirmed</option><option>Pending</option><option>Completed</option><option>Cancelled</option></select>
         </div>
@@ -758,11 +743,11 @@ tr:hover td{background:rgba(255,255,255,0.02);color:var(--white);}
   </div>
 </div>
 
-<!-- Invoice Modal -->
+<!-- Invoice Modal — UPDATED: single manual "Total Due" field, edit support -->
 <div class="modal-overlay" id="modal-invoice">
   <div class="modal">
     <div class="modal-head">
-      <div class="modal-title">New Invoice</div>
+      <div class="modal-title" id="invoice-modal-title">New Invoice</div>
       <button class="modal-close" onclick="closeModal('modal-invoice')">✕</button>
     </div>
     <div class="modal-body">
@@ -770,9 +755,11 @@ tr:hover td{background:rgba(255,255,255,0.02);color:var(--white);}
         <div class="field"><label>Customer Name *</label><input id="i-name" type="text" placeholder="Full name"></div>
         <div class="field"><label>Vehicle Reg</label><input id="i-reg" type="text" placeholder="AB12 CDE" style="text-transform:uppercase;"></div>
         <div class="field field-full"><label>Services Provided</label><input id="i-services" type="text" placeholder="e.g. Full service, front brake discs & pads"></div>
-        <div class="field"><label>Labour (£)</label><input id="i-labour" type="number" placeholder="0.00" oninput="calcInvoice()"></div>
-        <div class="field"><label>Parts (£)</label><input id="i-parts" type="number" placeholder="0.00" oninput="calcInvoice()"></div>
-        <div class="field field-full"><label>Total Due (inc. 20% VAT)</label><input id="i-total" type="text" readonly style="color:var(--red);font-weight:600;font-size:1.1rem;"></div>
+        <!-- REPLACED Labour + Parts with single manual Total Due -->
+        <div class="field field-full">
+          <label>Total Due (£ inc. VAT) *</label>
+          <input id="i-total" type="number" placeholder="Enter the final total amount" step="0.01" style="font-size:1.1rem;font-weight:600;color:var(--red);">
+        </div>
         <div class="field"><label>Invoice Date</label><input id="i-date" type="date"></div>
         <div class="field"><label>Payment Due</label><input id="i-due" type="date"></div>
         <div class="field field-full"><label>Status</label>
@@ -859,14 +846,8 @@ tr:hover td{background:rgba(255,255,255,0.02);color:var(--white);}
 // ══════════════════════════════════════
 // DATA STORE
 // ══════════════════════════════════════
-let data = {
-  bookings: [],
-  invoices: [],
-  supplies: [],
-  overheads: []
-};
+let data = { bookings: [], invoices: [], supplies: [], overheads: [] };
 
-// ── SUPABASE REST + LOCAL STORAGE ──
 const SB = 'https://hzbwjjypdcejcwtwalsp.supabase.co/rest/v1';
 const SK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh6YndqanlwZGNlamN3dHdhbHNwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3NTQ0NDcsImV4cCI6MjA5NjMzMDQ0N30.XCgZ2_3SRrJYwpm43rnsPTCnE_zT6x4VzILUF_AmR1M';
 const SH = {'apikey':SK,'Authorization':'Bearer '+SK,'Content-Type':'application/json','Prefer':'return=minimal'};
@@ -881,34 +862,32 @@ function showStatus(msg, color) {
   setTimeout(()=>el.classList.remove('show'), 2500);
 }
 
-function showSaveIndicator() { showStatus('✅ Saved', 'green'); }
-
 function save() {
   try { localStorage.setItem('garage_mgr', JSON.stringify(data)); } catch(e){}
-  showSaveIndicator();
+  showStatus('✅ Saved', 'green');
   refreshAll();
 }
 
-function fbAdd(colName, obj) {
+function fbAdd(col, obj) {
   obj.id = obj.id || uid();
   obj.createdat = Date.now();
-  data[colName].unshift(obj);
+  data[col].unshift(obj);
   save();
-  if(online) fetch(SB+'/'+colName, {method:'POST',headers:SH,body:JSON.stringify(obj)}).catch(()=>{});
+  if(online) fetch(SB+'/'+col, {method:'POST',headers:SH,body:JSON.stringify(obj)}).catch(()=>{});
   return obj.id;
 }
 
-function fbUpdate(colName, id, updates) {
-  const i = data[colName].findIndex(x=>x.id===id);
-  if(i>-1) data[colName][i] = {...data[colName][i], ...updates};
+function fbUpdate(col, id, updates) {
+  const i = data[col].findIndex(x=>x.id===id);
+  if(i>-1) data[col][i] = {...data[col][i], ...updates};
   save();
-  if(online) fetch(SB+'/'+colName+'?id=eq.'+id, {method:'PATCH',headers:SH,body:JSON.stringify(updates)}).catch(()=>{});
+  if(online) fetch(SB+'/'+col+'?id=eq.'+id, {method:'PATCH',headers:SH,body:JSON.stringify(updates)}).catch(()=>{});
 }
 
-function fbDelete(colName, id) {
-  data[colName] = data[colName].filter(x=>x.id!==id);
+function fbDelete(col, id) {
+  data[col] = data[col].filter(x=>x.id!==id);
   save();
-  if(online) fetch(SB+'/'+colName+'?id=eq.'+id, {method:'DELETE',headers:SH}).catch(()=>{});
+  if(online) fetch(SB+'/'+col+'?id=eq.'+id, {method:'DELETE',headers:SH}).catch(()=>{});
 }
 
 function pullFromSupabase() {
@@ -927,31 +906,12 @@ function loadData() {
   } catch(e){}
   refreshAll();
   showStatus('✅ Ready','green');
-  // Test Supabase connection with retries
   let attempts = 0;
   function tryConnect() {
     attempts++;
-    const controller = new AbortController();
-    const timeout = setTimeout(()=>controller.abort(), 8000);
-    fetch(SB+'/bookings?limit=1', {headers:SH, signal:controller.signal})
-      .then(r=>{
-        clearTimeout(timeout);
-        if(r.ok){
-          online=true;
-          pullFromSupabase();
-          showStatus('☁️ Live & Synced','green');
-          setInterval(pullFromSupabase,20000);
-        } else if(attempts < 4) {
-          setTimeout(tryConnect, 3000);
-        } else {
-          showStatus('📱 Local only','amber');
-        }
-      })
-      .catch(()=>{
-        clearTimeout(timeout);
-        if(attempts < 4) setTimeout(tryConnect, 3000);
-        else showStatus('📱 Local only','amber');
-      });
+    fetch(SB+'/bookings?limit=1', {headers:SH})
+      .then(r=>{ if(r.ok){ online=true; pullFromSupabase(); showStatus('☁️ Live & Synced','green'); setInterval(pullFromSupabase,20000); } else if(attempts<4) setTimeout(tryConnect,3000); })
+      .catch(()=>{ if(attempts<4) setTimeout(tryConnect,3000); });
   }
   setTimeout(tryConnect, 2000);
 }
@@ -972,25 +932,25 @@ const pageTitles = {
 };
 
 function showPage(id, el) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.querySelectorAll('.bottom-nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelectorAll('.bottom-nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
   if(el) el.classList.add('active');
-  // Sync bottom nav
   const bnEl = document.getElementById('bn-'+id);
   if(bnEl) bnEl.classList.add('active');
   document.getElementById('pageTitle').textContent = pageTitles[id]||id;
   if(id==='profit') renderProfit();
 }
 
-// ══════════════════════════════════════
-// ADD BUTTON HANDLER
-// ══════════════════════════════════════
 function handleAdd(e) {
   if(e) e.preventDefault();
   const page = document.querySelector('.page.active').id.replace('page-','');
   const map = { dashboard:'booking', bookings:'booking', invoices:'invoice', supplies:'supply', overheads:'overhead', profit:'invoice' };
+  editInvoiceId = null;
+  editBookingId = null;
+  document.getElementById('invoice-modal-title').textContent = 'New Invoice';
+  document.getElementById('booking-modal-title').textContent = 'New Booking';
   openModal('modal-'+(map[page]||'booking'));
 }
 
@@ -998,7 +958,6 @@ function handleAdd(e) {
 // MODALS
 // ══════════════════════════════════════
 function openModal(id) {
-  // Set today's date on relevant fields
   ['b-date','i-date','i-due','s-date','o-due'].forEach(f => {
     const el = document.getElementById(f);
     if(el && !el.value) el.value = today();
@@ -1007,7 +966,6 @@ function openModal(id) {
 }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-// Close on overlay click
 document.querySelectorAll('.modal-overlay').forEach(o => {
   o.addEventListener('click', e => { if(e.target===o) o.classList.remove('open'); });
 });
@@ -1016,6 +974,7 @@ document.querySelectorAll('.modal-overlay').forEach(o => {
 // BOOKINGS
 // ══════════════════════════════════════
 let editBookingId = null;
+
 function saveBooking() {
   const name = document.getElementById('b-name').value.trim();
   if(!name) { alert('Customer name is required.'); return; }
@@ -1047,16 +1006,16 @@ function editBooking(id) {
   if(!b) return;
   editBookingId = id;
   document.getElementById('booking-modal-title').textContent = 'Edit Booking';
-  document.getElementById('b-name').value = b.name;
-  document.getElementById('b-phone').value = b.phone;
-  document.getElementById('b-reg').value = b.reg;
-  document.getElementById('b-vehicle').value = b.vehicle;
-  document.getElementById('b-service').value = b.service;
-  document.getElementById('b-date').value = b.date;
-  document.getElementById('b-time').value = b.time;
-  document.getElementById('b-price').value = b.price;
-  document.getElementById('b-status').value = b.status;
-  document.getElementById('b-notes').value = b.notes;
+  document.getElementById('b-name').value = b.name||'';
+  document.getElementById('b-phone').value = b.phone||'';
+  document.getElementById('b-reg').value = b.reg||'';
+  document.getElementById('b-vehicle').value = b.vehicle||'';
+  document.getElementById('b-service').value = b.service||'Full Car Service';
+  document.getElementById('b-date').value = b.date||'';
+  document.getElementById('b-time').value = b.time||'09:00';
+  document.getElementById('b-price').value = b.price||'';
+  document.getElementById('b-status').value = b.status||'Confirmed';
+  document.getElementById('b-notes').value = b.notes||'';
   openModal('modal-booking');
 }
 
@@ -1074,7 +1033,7 @@ function renderBookings() {
     <tr>
       <td class="td-mono" style="color:var(--dim);">#${String(i+1).padStart(3,'0')}</td>
       <td class="td-strong">${b.name}</td>
-      <td>${b.reg} ${b.vehicle?'· '+b.vehicle:''}</td>
+      <td>${b.reg||''} ${b.vehicle?'· '+b.vehicle:''}</td>
       <td>${b.service}</td>
       <td class="td-mono">${b.date||'—'}</td>
       <td class="td-mono">${b.time||'—'}</td>
@@ -1090,57 +1049,90 @@ function renderBookings() {
 function convertToInvoice(bookingId) {
   const b = data.bookings.find(x=>x.id===bookingId);
   if(!b) return;
+  editInvoiceId = null;
+  document.getElementById('invoice-modal-title').textContent = 'New Invoice';
   document.getElementById('i-name').value = b.name;
   document.getElementById('i-reg').value = b.reg;
   document.getElementById('i-services').value = b.service;
-  document.getElementById('i-labour').value = b.price;
+  document.getElementById('i-total').value = b.price||'';
   document.getElementById('i-date').value = today();
   document.getElementById('i-due').value = today();
-  calcInvoice();
   openModal('modal-invoice');
 }
 
 // ══════════════════════════════════════
-// INVOICES
+// INVOICES — UPDATED
 // ══════════════════════════════════════
-function calcInvoice() {
-  const labour = parseFloat(document.getElementById('i-labour').value)||0;
-  const parts = parseFloat(document.getElementById('i-parts').value)||0;
-  const sub = labour + parts;
-  const vat = sub * 0.2;
-  document.getElementById('i-subtotal').value = fmt(sub);
-  document.getElementById('i-vat').value = fmt(vat);
-  document.getElementById('i-total').value = fmt(sub+vat);
-}
+let editInvoiceId = null;
 
 function saveInvoice() {
   const name = document.getElementById('i-name').value.trim();
   if(!name) { alert('Customer name is required.'); return; }
-  const labour = parseFloat(document.getElementById('i-labour').value)||0;
-  const parts = parseFloat(document.getElementById('i-parts').value)||0;
-  const sub = labour+parts;
-  const inv = {
-    id: uid(),
-    ref: 'INV-' + new Date().getFullYear() + '-' + String(data.invoices.length+1).padStart(4,'0'),
-    name, reg: document.getElementById('i-reg').value.toUpperCase(),
-    services: document.getElementById('i-services').value,
-    labour, parts, subtotal: sub, vat: sub*0.2, total: sub*1.2,
-    date: document.getElementById('i-date').value,
-    due: document.getElementById('i-due').value,
-    status: document.getElementById('i-status').value,
-    notes: document.getElementById('i-notes').value,
-  };
-  fbAdd('invoices', inv);
+  const total = parseFloat(document.getElementById('i-total').value)||0;
+  if(!total) { alert('Please enter a Total Due amount.'); return; }
+
+  if(editInvoiceId) {
+    // UPDATE existing invoice
+    const updates = {
+      name,
+      reg: document.getElementById('i-reg').value.toUpperCase(),
+      services: document.getElementById('i-services').value,
+      total,
+      date: document.getElementById('i-date').value,
+      due: document.getElementById('i-due').value,
+      status: document.getElementById('i-status').value,
+      notes: document.getElementById('i-notes').value,
+    };
+    fbUpdate('invoices', editInvoiceId, updates);
+    editInvoiceId = null;
+  } else {
+    // NEW invoice
+    const inv = {
+      id: uid(),
+      ref: 'INV-' + new Date().getFullYear() + '-' + String(data.invoices.length+1).padStart(4,'0'),
+      name,
+      reg: document.getElementById('i-reg').value.toUpperCase(),
+      services: document.getElementById('i-services').value,
+      total,
+      date: document.getElementById('i-date').value,
+      due: document.getElementById('i-due').value,
+      status: document.getElementById('i-status').value,
+      notes: document.getElementById('i-notes').value,
+    };
+    fbAdd('invoices', inv);
+  }
+  document.getElementById('invoice-modal-title').textContent = 'New Invoice';
   closeModal('modal-invoice');
   clearModal('modal-invoice');
 }
 
-function markPaid(id) {
-  fbUpdate('invoices', id, {status:'Paid'});
+// OPEN invoice for editing
+function editInvoice(id) {
+  const inv = data.invoices.find(x=>x.id===id);
+  if(!inv) return;
+  editInvoiceId = id;
+  document.getElementById('invoice-modal-title').textContent = 'Edit Invoice';
+  document.getElementById('i-name').value = inv.name||'';
+  document.getElementById('i-reg').value = inv.reg||'';
+  document.getElementById('i-services').value = inv.services||'';
+  document.getElementById('i-total').value = inv.total||'';
+  document.getElementById('i-date').value = inv.date||today();
+  document.getElementById('i-due').value = inv.due||today();
+  document.getElementById('i-status').value = inv.status||'Unpaid';
+  document.getElementById('i-notes').value = inv.notes||'';
+  openModal('modal-invoice');
+}
+
+// TOGGLE between Paid / Unpaid
+function togglePaid(id) {
+  const inv = data.invoices.find(x=>x.id===id);
+  if(!inv) return;
+  const next = inv.status === 'Paid' ? 'Unpaid' : 'Paid';
+  fbUpdate('invoices', id, {status: next});
 }
 
 function deleteInvoice(id) {
-  if(!confirm('Delete this invoice?')) return;
+  if(!confirm('Delete this invoice? This cannot be undone.')) return;
   fbDelete('invoices', id);
 }
 
@@ -1148,21 +1140,21 @@ function renderInvoices() {
   const filter = document.getElementById('invoiceFilter')?.value||'';
   const list = filter ? data.invoices.filter(i=>i.status===filter) : data.invoices;
   const tbody = document.getElementById('invoices-body');
-  if(!list.length) { tbody.innerHTML = `<tr><td colspan="10"><div class="empty"><span class="e-icon">🧾</span>No invoices found</div></td></tr>`; return; }
+  if(!list.length) { tbody.innerHTML = `<tr><td colspan="8"><div class="empty"><span class="e-icon">🧾</span>No invoices found</div></td></tr>`; return; }
   tbody.innerHTML = list.map(i=>`
     <tr>
-      <td class="td-mono" style="color:var(--dim);">${i.ref}</td>
+      <td class="td-mono" style="color:var(--dim);">${i.ref||'—'}</td>
       <td class="td-strong">${i.name}</td>
       <td class="td-mono">${i.reg||'—'}</td>
       <td style="max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${i.services||'—'}</td>
       <td class="td-mono td-strong" style="color:var(--red);">${fmt(i.total)}</td>
       <td class="td-mono">${i.date||'—'}</td>
       <td>${statusBadge(i.status)}</td>
-      <td>
-        ${i.status!=='Paid'?`<button class="act-btn" onclick="markPaid('${i.id}')" title="Mark Paid">✅</button>`:''}
+      <td style="white-space:nowrap;">
+        <button class="act-btn" onclick="togglePaid('${i.id}')" title="${i.status==='Paid'?'Mark Unpaid':'Mark Paid'}">${i.status==='Paid'?'↩️':'✅'}</button>
+        <button class="act-btn" onclick="editInvoice('${i.id}')" title="View / Edit">✏️</button>
         <button class="act-btn" onclick="exportInvoicePDF('${i.id}')" title="Export PDF">📄</button>
         <button class="act-btn del" onclick="deleteInvoice('${i.id}')" title="Delete">🗑</button>
-        <button class="act-btn" onclick="editInvoiceStatus('${i.id}')" title="Edit Status">✏️</button>
       </td>
     </tr>`).join('');
 }
@@ -1216,7 +1208,6 @@ function renderSupplies() {
       <td class="td-mono">${s.date||'—'}</td>
       <td><button class="act-btn del" onclick="deleteSupply('${s.id}')" title="Delete">🗑</button></td>
     </tr>`).join('');
-  // Update supply stats
   const all = data.supplies;
   document.getElementById('sup-total').textContent = fmt(all.reduce((a,s)=>a+s.total,0));
   document.getElementById('sup-month').textContent = fmt(all.filter(s=>monthKey(s.date)===thisMonth()).reduce((a,s)=>a+s.total,0));
@@ -1288,17 +1279,16 @@ function renderProfit() {
   const paidInvoices = data.invoices.filter(i=>i.status==='Paid');
   const revenue = paidInvoices.reduce((a,i)=>a+i.total,0);
   const supplyCosts = data.supplies.reduce((a,s)=>a+s.total,0);
-  const ohCosts = data.overheads.reduce((a,o)=>a+o.monthly,0) * 12;
-  const totalCosts = supplyCosts + ohCosts;
-  const gross = revenue - totalCosts;
-  const margin = revenue ? (gross/revenue*100) : 0;
+  const ohCosts = data.overheads.reduce((a,o)=>a+o.monthly,0)*12;
+  const totalCosts = supplyCosts+ohCosts;
+  const gross = revenue-totalCosts;
+  const margin = revenue?(gross/revenue*100):0;
 
   document.getElementById('pl-revenue').textContent = fmt(revenue);
   document.getElementById('pl-costs').textContent = fmt(totalCosts);
   document.getElementById('pl-gross').textContent = fmt(gross);
   document.getElementById('pl-margin').textContent = margin.toFixed(1)+'%';
 
-  // Revenue breakdown
   const revEl = document.getElementById('revenue-breakdown');
   if(!paidInvoices.length) { revEl.innerHTML = `<div class="empty"><span class="e-icon">📈</span>No paid invoices yet</div>`; }
   else {
@@ -1311,9 +1301,7 @@ function renderProfit() {
       </div>`).join('');
   }
 
-  // Cost breakdown
-  const costEl = document.getElementById('cost-breakdown');
-  costEl.innerHTML = `
+  document.getElementById('cost-breakdown').innerHTML = `
     <div class="profit-bar-wrap">
       <div class="profit-bar-label"><span>Supplies</span><span>${fmt(supplyCosts)}</span></div>
       <div class="profit-bar-bg"><div class="profit-bar-fill" style="width:${totalCosts?Math.min(100,supplyCosts/totalCosts*100):0}%"></div></div>
@@ -1323,7 +1311,6 @@ function renderProfit() {
       <div class="profit-bar-bg"><div class="profit-bar-fill" style="width:${totalCosts?Math.min(100,ohCosts/totalCosts*100):0}%"></div></div>
     </div>`;
 
-  // Monthly summary
   const months = {};
   paidInvoices.forEach(i=>{ const m=monthKey(i.date); months[m]=(months[m]||{rev:0,sup:0}); months[m].rev+=i.total; });
   data.supplies.forEach(s=>{ const m=monthKey(s.date); months[m]=(months[m]||{rev:0,sup:0}); months[m].sup+=s.total; });
@@ -1332,8 +1319,8 @@ function renderProfit() {
   const entries = Object.entries(months).sort((a,b)=>b[0].localeCompare(a[0]));
   if(!entries.length) { tbody.innerHTML = `<tr><td colspan="6"><div class="empty">No data yet</div></td></tr>`; return; }
   tbody.innerHTML = entries.map(([m,v])=>{
-    const profit = v.rev - v.sup - moh;
-    const marg = v.rev ? (profit/v.rev*100).toFixed(1)+'%' : '—';
+    const profit = v.rev-v.sup-moh;
+    const marg = v.rev?(profit/v.rev*100).toFixed(1)+'%':'—';
     return `<tr>
       <td class="td-mono td-strong">${m}</td>
       <td class="td-mono" style="color:var(--green);">${fmt(v.rev)}</td>
@@ -1349,12 +1336,11 @@ function renderProfit() {
 // DASHBOARD
 // ══════════════════════════════════════
 function renderDashboard() {
-  // Stats
   const thisMonthInvoices = data.invoices.filter(i=>i.status==='Paid'&&monthKey(i.date)===thisMonth());
   const revenue = thisMonthInvoices.reduce((a,i)=>a+i.total,0);
   const thisMonthSupplies = data.supplies.filter(s=>monthKey(s.date)===thisMonth()).reduce((a,s)=>a+s.total,0);
   const ohMonthly = data.overheads.reduce((a,o)=>a+o.monthly,0);
-  const profit = revenue - thisMonthSupplies - ohMonthly;
+  const profit = revenue-thisMonthSupplies-ohMonthly;
   const outstanding = data.invoices.filter(i=>i.status!=='Paid').reduce((a,i)=>a+i.total,0);
   const bookingsThisMonth = data.bookings.filter(b=>monthKey(b.date)===thisMonth()&&b.status!=='Cancelled').length;
 
@@ -1363,49 +1349,25 @@ function renderDashboard() {
   document.getElementById('dash-outstanding').textContent = fmt(outstanding);
   document.getElementById('dash-bookings').textContent = bookingsThisMonth;
 
-  // Upcoming bookings
   const upcoming = data.bookings.filter(b=>b.status!=='Cancelled'&&b.status!=='Completed').slice(0,5);
-  const bTbody = document.getElementById('dash-bookings-list');
-  bTbody.innerHTML = upcoming.length ? upcoming.map(b=>`
-    <tr>
-      <td class="td-strong">${b.name}</td>
-      <td>${b.service}</td>
-      <td class="td-mono">${b.date||'—'}</td>
-      <td>${statusBadge(b.status)}</td>
-    </tr>`).join('') : `<tr><td colspan="4"><div class="empty"><span class="e-icon">📅</span>No upcoming bookings</div></td></tr>`;
+  document.getElementById('dash-bookings-list').innerHTML = upcoming.length ? upcoming.map(b=>`
+    <tr><td class="td-strong">${b.name}</td><td>${b.service}</td><td class="td-mono">${b.date||'—'}</td><td>${statusBadge(b.status)}</td></tr>`)
+    .join('') : `<tr><td colspan="4"><div class="empty"><span class="e-icon">📅</span>No upcoming bookings</div></td></tr>`;
 
-  // Unpaid invoices
   const unpaid = data.invoices.filter(i=>i.status!=='Paid').slice(0,5);
-  const iTbody = document.getElementById('dash-invoices-list');
-  iTbody.innerHTML = unpaid.length ? unpaid.map(i=>`
-    <tr>
-      <td class="td-mono" style="color:var(--dim);">${i.ref}</td>
-      <td class="td-strong">${i.name}</td>
-      <td class="td-mono" style="color:var(--amber);">${fmt(i.total)}</td>
-      <td>${statusBadge(i.status)}</td>
-    </tr>`).join('') : `<tr><td colspan="4"><div class="empty"><span class="e-icon">🧾</span>No unpaid invoices</div></td></tr>`;
+  document.getElementById('dash-invoices-list').innerHTML = unpaid.length ? unpaid.map(i=>`
+    <tr><td class="td-mono" style="color:var(--dim);">${i.ref||'—'}</td><td class="td-strong">${i.name}</td><td class="td-mono" style="color:var(--amber);">${fmt(i.total)}</td><td>${statusBadge(i.status)}</td></tr>`)
+    .join('') : `<tr><td colspan="4"><div class="empty"><span class="e-icon">🧾</span>No unpaid invoices</div></td></tr>`;
 
-  // Recent supplies
   const recentSup = data.supplies.slice(0,4);
-  const sTbody = document.getElementById('dash-supplies-list');
-  sTbody.innerHTML = recentSup.length ? recentSup.map(s=>`
-    <tr>
-      <td class="td-strong">${s.item}</td>
-      <td>${s.supplier||'—'}</td>
-      <td class="td-mono" style="color:var(--red);">${fmt(s.total)}</td>
-      <td class="td-mono">${s.date||'—'}</td>
-    </tr>`).join('') : `<tr><td colspan="4"><div class="empty"><span class="e-icon">🛒</span>No supplies yet</div></td></tr>`;
+  document.getElementById('dash-supplies-list').innerHTML = recentSup.length ? recentSup.map(s=>`
+    <tr><td class="td-strong">${s.item}</td><td>${s.supplier||'—'}</td><td class="td-mono" style="color:var(--red);">${fmt(s.total)}</td><td class="td-mono">${s.date||'—'}</td></tr>`)
+    .join('') : `<tr><td colspan="4"><div class="empty"><span class="e-icon">🛒</span>No supplies yet</div></td></tr>`;
 
-  // Overheads
-  const oTbody = document.getElementById('dash-overheads-list');
-  oTbody.innerHTML = data.overheads.length ? data.overheads.slice(0,5).map(o=>`
-    <tr>
-      <td class="td-strong">${o.name}</td>
-      <td><span class="badge badge-grey">${o.category}</span></td>
-      <td class="td-mono" style="color:var(--amber);">${fmt(o.monthly)}/mo</td>
-    </tr>`).join('') : `<tr><td colspan="3"><div class="empty"><span class="e-icon">🏢</span>No overheads yet</div></td></tr>`;
+  document.getElementById('dash-overheads-list').innerHTML = data.overheads.length ? data.overheads.slice(0,5).map(o=>`
+    <tr><td class="td-strong">${o.name}</td><td><span class="badge badge-grey">${o.category}</span></td><td class="td-mono" style="color:var(--amber);">${fmt(o.monthly)}/mo</td></tr>`)
+    .join('') : `<tr><td colspan="3"><div class="empty"><span class="e-icon">🏢</span>No overheads yet</div></td></tr>`;
 
-  // Badges
   document.getElementById('bookingBadge').textContent = data.bookings.filter(b=>b.status==='Pending').length||'';
   document.getElementById('invoiceBadge').textContent = data.invoices.filter(i=>i.status==='Unpaid'||i.status==='Overdue').length||'';
 }
@@ -1424,14 +1386,12 @@ function statusBadge(s) {
 
 function clearModal(id) {
   document.querySelectorAll(`#${id} input:not([readonly]), #${id} select, #${id} textarea`).forEach(el=>{
-    if(el.type==='number') el.value='';
-    else if(el.tagName==='SELECT') el.selectedIndex=0;
+    if(el.tagName==='SELECT') el.selectedIndex=0;
     else el.value='';
   });
 }
 
 function globalSearch(q) {
-  // Basic search — highlights matching rows
   q = q.toLowerCase();
   document.querySelectorAll('tbody tr').forEach(row=>{
     row.style.display = (!q||row.textContent.toLowerCase().includes(q)) ? '' : 'none';
@@ -1443,10 +1403,7 @@ function exportInvoicePDF(id) {
   if(!inv) return;
   const win = window.open('', '_blank');
   win.document.write(`<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Invoice ${inv.ref}</title>
+<html><head><meta charset="UTF-8"><title>Invoice ${inv.ref}</title>
 <style>
   body{font-family:Arial,sans-serif;color:#111;padding:2rem;max-width:700px;margin:0 auto;}
   .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2rem;padding-bottom:1rem;border-bottom:3px solid #d42b2b;}
@@ -1462,81 +1419,43 @@ function exportInvoicePDF(id) {
   td{padding:0.7rem 1rem;border-bottom:1px solid #eee;font-size:0.92rem;}
   .total-section{text-align:right;}
   .total-row{display:flex;justify-content:flex-end;gap:2rem;padding:0.4rem 0;}
-  .total-label{font-size:0.85rem;color:#666;width:120px;text-align:right;}
-  .total-value{font-size:0.95rem;width:80px;text-align:right;}
   .grand-total{font-size:1.2rem;font-weight:900;color:#d42b2b;border-top:2px solid #d42b2b;padding-top:0.5rem;margin-top:0.25rem;}
-  .status-badge{display:inline-block;padding:0.3rem 1rem;font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;}
-  .status-paid{background:#d4edda;color:#155724;}
-  .status-unpaid{background:#fff3cd;color:#856404;}
-  .status-overdue{background:#f8d7da;color:#721c24;}
   .footer{margin-top:3rem;padding-top:1rem;border-top:1px solid #ddd;font-size:0.78rem;color:#999;text-align:center;}
-  @media print{body{padding:1rem;} .no-print{display:none;}}
+  .badge{display:inline-block;padding:0.3rem 1rem;font-size:0.8rem;font-weight:700;text-transform:uppercase;border-radius:2px;}
+  .badge-unpaid{background:#fff3cd;color:#856404;}
+  .badge-paid{background:#d4edda;color:#155724;}
+  .badge-overdue{background:#f8d7da;color:#721c24;}
+  @media print{.no-print{display:none;}}
 </style>
-</head>
-<body>
+</head><body>
 <div class="header">
-  <div>
-    <div class="biz-name">AUTO <span>SERVICES</span></div>
-    <div style="font-size:0.82rem;color:#666;margin-top:0.25rem;">Professional Car Servicing & Brake Specialists</div>
-  </div>
+  <div><div class="biz-name">AUTO <span>SERVICES</span></div><div style="font-size:0.82rem;color:#666;margin-top:0.25rem;">Professional Car Servicing & Brake Specialists</div></div>
   <div>
     <div class="inv-title">INVOICE</div>
-    <div class="inv-ref">${inv.ref}</div>
-    <div class="inv-ref">Date: ${inv.date}</div>
-    <div style="margin-top:0.5rem;">
-      <span class="status-badge status-${(inv.status||'unpaid').toLowerCase()}">${inv.status||'Unpaid'}</span>
-    </div>
+    <div class="inv-ref">${inv.ref||''}</div>
+    <div class="inv-ref">Date: ${inv.date||''}</div>
+    <div style="margin-top:0.5rem;"><span class="badge badge-${(inv.status||'unpaid').toLowerCase()}">${inv.status||'Unpaid'}</span></div>
   </div>
 </div>
-
 <div class="details">
-  <div class="detail-box">
-    <h4>Bill To</h4>
-    <p><strong>${inv.name}</strong><br>
-    ${inv.reg ? 'Vehicle: '+inv.reg : ''}</p>
-  </div>
-  <div class="detail-box">
-    <h4>Payment Due</h4>
-    <p>${inv.due || inv.date}</p>
-  </div>
+  <div class="detail-box"><h4>Bill To</h4><p><strong>${inv.name}</strong><br>${inv.reg?'Vehicle: '+inv.reg:''}</p></div>
+  <div class="detail-box"><h4>Payment Due</h4><p>${inv.due||inv.date||''}</p></div>
 </div>
-
 <table>
   <thead><tr><th>Description</th><th style="text-align:right;">Amount</th></tr></thead>
-  <tbody>
-    <tr><td>${inv.services || 'Services provided'}</td><td style="text-align:right;">£${parseFloat(inv.subtotal||0).toFixed(2)}</td></tr>
-  </tbody>
+  <tbody><tr><td>${inv.services||'Services provided'}</td><td style="text-align:right;">£${parseFloat(inv.total||0).toFixed(2)}</td></tr></tbody>
 </table>
-
 <div class="total-section">
-  <div class="total-row"><span class="total-label">Subtotal</span><span class="total-value">£${parseFloat(inv.subtotal||0).toFixed(2)}</span></div>
-  <div class="total-row"><span class="total-label">VAT (20%)</span><span class="total-value">£${parseFloat(inv.vat||0).toFixed(2)}</span></div>
-  <div class="total-row grand-total"><span class="total-label">Total Due</span><span class="total-value">£${parseFloat(inv.total||0).toFixed(2)}</span></div>
+  <div class="total-row grand-total"><span>Total Due (inc. VAT)</span><span>£${parseFloat(inv.total||0).toFixed(2)}</span></div>
 </div>
-
-${inv.notes ? `<div style="margin-top:1.5rem;padding:1rem;background:#f9f9f9;border-left:3px solid #d42b2b;"><strong>Notes:</strong><br>${inv.notes}</div>` : ''}
-
-<div class="footer">
-  <p>Thank you for your business. Payment due within 14 days.</p>
-  <p style="margin-top:0.25rem;">12-month / 12,000-mile warranty on all parts and labour.</p>
-</div>
-
+${inv.notes?`<div style="margin-top:1.5rem;padding:1rem;background:#f9f9f9;border-left:3px solid #d42b2b;"><strong>Notes:</strong><br>${inv.notes}</div>`:''}
+<div class="footer"><p>Thank you for your business. Payment due within 14 days.</p><p style="margin-top:0.25rem;">12-month / 12,000-mile warranty on all parts and labour.</p></div>
 <div class="no-print" style="text-align:center;margin-top:2rem;">
   <button onclick="window.print()" style="background:#d42b2b;color:#fff;border:none;padding:0.75rem 2rem;font-size:1rem;cursor:pointer;margin-right:1rem;">🖨 Print / Save PDF</button>
   <button onclick="window.close()" style="background:#eee;border:none;padding:0.75rem 2rem;font-size:1rem;cursor:pointer;">Close</button>
 </div>
-</body>
-</html>`);
+</body></html>`);
   win.document.close();
-}
-
-function editInvoiceStatus(id) {
-  const inv = data.invoices.find(x=>x.id===id);
-  if(!inv) return;
-  const statuses = ['Unpaid','Paid','Overdue'];
-  const current = statuses.indexOf(inv.status);
-  const next = statuses[(current+1) % statuses.length];
-  fbUpdate('invoices', id, {status:next});
 }
 
 function refreshAll() {
@@ -1545,7 +1464,6 @@ function refreshAll() {
   renderInvoices();
   renderSupplies();
   renderOverheads();
-  // Sync bottom nav badges
   const pb = data.bookings.filter(b=>b.status==='Pending').length;
   const ib = data.invoices.filter(i=>i.status==='Unpaid'||i.status==='Overdue').length;
   const bnBb = document.getElementById('bn-bookingBadge');
@@ -1558,20 +1476,17 @@ function setBottomNav(id) {
   document.querySelectorAll('.bottom-nav-item').forEach(el=>el.classList.remove('active'));
   const el = document.getElementById(id);
   if(el) el.classList.add('active');
-  // Also sync sidebar
   const pageId = id.replace('bn-','');
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   const sideEl = document.querySelector(`.nav-item[onclick*="${pageId}"]`);
   if(sideEl) sideEl.classList.add('active');
 }
 
-// ── SIGN OUT ──
 function signOut() {
   sessionStorage.removeItem('garage_auth');
   location.reload();
 }
 
-// ── LOGIN ──
 const USERS = { 'stephen':'Autoservice2026', 'neil':'Autoservice2026' };
 
 function doLogin() {
@@ -1597,7 +1512,6 @@ function checkLogin() {
   }
 }
 
-// Init
 checkLogin();
 </script>
 </body>
