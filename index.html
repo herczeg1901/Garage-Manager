@@ -716,7 +716,7 @@ tr:hover td{background:rgba(255,255,255,0.02);color:var(--white);}
       <div class="field-grid">
         <div class="field"><label>Customer Name *</label><input id="b-name" type="text" placeholder="Full name"></div>
         <div class="field"><label>Phone</label><input id="b-phone" type="tel" placeholder="07700 900000"></div>
-        <div class="field"><label>Vehicle Reg *</label><input id="b-reg" type="text" placeholder="AB12 CDE" style="text-transform:uppercase;"></div>
+        <div class="field"><label>Vehicle Reg *</label><input id="b-reg" type="text" placeholder="AB12 CDE" style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()" onblur="lookupCustomerForBooking()"></div>
         <div class="field"><label>Make & Model</label><input id="b-vehicle" type="text" placeholder="Ford Focus"></div>
         <div class="field field-full"><label>Service Required *</label>
           <select id="b-service">
@@ -974,6 +974,39 @@ document.querySelectorAll('.modal-overlay').forEach(o => {
 // BOOKINGS
 // ══════════════════════════════════════
 let editBookingId = null;
+
+// ── CUSTOMER LOOKUP (shared customer_db with Service Report — same localStorage origin) ──
+function lookupCustomerForBooking() {
+  const regInput = document.getElementById('b-reg');
+  const reg = regInput.value.trim().toUpperCase();
+  regInput.value = reg;
+  if(!reg) return;
+
+  let db = {};
+  try {
+    const saved = localStorage.getItem('customer_db');
+    if(saved) db = JSON.parse(saved);
+  } catch(e){}
+
+  const record = db[reg];
+  if(!record) return;
+
+  // Only fill fields that are currently empty — never overwrite what's been typed
+  const nameEl = document.getElementById('b-name');
+  const phoneEl = document.getElementById('b-phone');
+  const vehicleEl = document.getElementById('b-vehicle');
+
+  if(nameEl && !nameEl.value && record.name) nameEl.value = record.name;
+  if(phoneEl && !phoneEl.value && record.phone) phoneEl.value = record.phone;
+  if(vehicleEl && !vehicleEl.value) {
+    const model = [record.makeModel, record.carYear].filter(Boolean).join(' ');
+    if(model) vehicleEl.value = model;
+  }
+
+  if(record.name || record.makeModel) {
+    showStatus(`📋 Loaded details for ${reg}${record.name ? ' — ' + record.name : ''}`, 'green');
+  }
+}
 
 function saveBooking() {
   const name = document.getElementById('b-name').value.trim();
